@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -91,7 +90,7 @@ bool estVide(Liste l)
 
 int premier(Liste l)
 {
-    return l->nombre ; 
+    return l->nombre ;
 }
 
 Liste ajoute(int x, Liste l)
@@ -104,7 +103,7 @@ Liste ajoute(int x, Liste l)
 
 void empile(int x, Liste *L)
 {
-      *L = ajoute(x,*L) ; 
+      *L = ajoute(x,*L) ;
 }
 
 Liste suite(Liste l)
@@ -221,7 +220,7 @@ void VideListe(Liste *L)
         depile(L);
         VideListe(L);
     }
-      
+
 }
 
 /*************************************************/
@@ -231,7 +230,9 @@ void VideListe(Liste *L)
 /*************************************************/
 
 bool DebutDeuxIdentiques (Liste l){
-	return premier(l) == premier(suite(l));
+  if (estVide(l)) return FALSE;
+  else if (estVide(suite(l))) return FALSE;
+  else return premier(l) == premier(suite(l));
 }
 
 bool QueDesZeros (Liste l){
@@ -240,37 +241,29 @@ bool QueDesZeros (Liste l){
 		else return FALSE;
 }
 
+
 bool SousEnsemble (Liste l1, Liste l2){ //Fonction très très trèès moche
 	if (longueur_rec(l1) > longueur_rec(l2)) return FALSE;
 	else if (estVide(l1)) return TRUE;
 	else if (estVide(l2)) return FALSE;
-	else 
+	else
 		if (premier(l1)==premier(l2)) SousEnsemble(suite(l1),suite(l2));
 		else SousEnsemble(l1,suite(l2));
 
 }
 
-/*void EliminePositionsPaires (Liste *l){ //MARCHE PAS T.T
-	int i =0;
-	if (! (*l == NULL)) {
-			if (i%2 == 0){
-				depile(l);
-				i++;
-				EliminePositionsPaires(l);
-			}
-	}
-}*/
-
-bool EstPalindrome(Liste l, Liste m){
-	if (estVide(m) || estVide(l) ) return TRUE;
-	else{ 
-		EstPalindrome(l,suite(m));
-		if (premier(l) != premier(m)) return FALSE; 
-		l = suite(l);
-
-	}
-	return TRUE;
-
+void EliminePositionsPaires (Liste *l){
+  void Aux(Liste *l, int i){
+    if (! estVide(*l)){
+      if (i%2 == 0){
+        depile(l);
+        Aux(l, 1);
+      } else {
+        Aux(&((**l).suivant), 0);
+      }
+     }
+  }
+  Aux(l, 1);
 }
 
 int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
@@ -279,126 +272,133 @@ int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 	if (estVide(l)) return count;
 	while(! estVide(l)){
 		if(premier(l) == 0) {
-			count++; //Le compteur augmente de un (1) si la liste contient un zero
+      /*Le compteur augmente de un (1) si la liste contient un zero*/
+			count++;
 		}else{
-			if(count > max) max = count; //max prend le plus grand nombre de zero consécutif trouvé
-			count = 0; //Le compteur est remis à zéro lorsque l'on rencontre un autre chiffre que zero dans la liste
+      /*max prend le plus grand nombre de zero consécutif trouvé*/
+			if(count > max) max = count;
+      /*Le compteur est remis à zéro lorsque l'on rencontre un autre chiffre
+      que zero dans la liste*/
+			count = 0;
 		}
 		l = suite(l);
 	}
 	return max;
 }
 
-
-int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction (deuxieme version)
-	int Aux (Liste l, int count, int max){
-		if(estVide(l)) return max;
-		else{
+int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction
+	int Aux(Liste l, int count, int max){
+		while(! estVide(l)){
 			if(premier(l) == 0) {
-				Aux(suite(l),count+1,max);
+			count++;
 			}else{
 				if(count > max) max = count;
-				Aux(suite(l),0,max);
+			count = 0;
 			}
+			l = suite(l);
 		}
+	return max;
 	}
-	Aux (l,0,0);
+	Aux(l,0,0);
 }
+
+bool EstPalindrome(Liste l){
+  Liste p;
+  initVide(&p);
+  p = l;
+  void Aux(Liste *p, Liste l, bool *res){
+	   if (estVide(l)) *res = TRUE;
+	   else{
+		  Aux(p, suite(l), res);
+		  if (premier(*p) != premier(l)) *res = FALSE;
+      *p = suite(*p);
+	   }
+  }
+  bool res;
+  Aux(&p, l, &res);
+  VideListe(&p);
+  return res;
+}
+
 
 /*************************************************/
 /*                                               */
 /*           Main                                */
 /*                                               */
 /*************************************************/
+int main(int argc, char** argv){
 
-void poup (Liste l)
-{
-        printf("Double Affichage \n") ;
-        affiche_rec(l) ;
-        affiche_iter(l) ;
 
-        printf("Longueur en double %d %d \n\n", 
-                           longueur_rec(l), 
-                           longueur_iter(l) 
-               ) ;
-}
 
-int main(int argc, char** argv)
-{
+/**--------------------TEST DES FONCTIONS ET PROCEDURES--------------------**/
     Liste l ;
-
-        initVide (&l) ;
-
-          poup(l) ;
-
-             empile(4, &l) ;
-
-          poup(l) ;
-
-             empile(5, &l) ;
-             empile(6, &l) ;
-             empile(7, &l) ;
-             empile(8, &l) ;
-             empile(9, &l) ;
-
-          poup(l) ;
-
-        VireDernier_rec  (&l) ;
-        VireDernier_iter (&l) ;
-        depile(& l) ;
-
-          poup(l) ;
-
-    VideListe(&l);
-
-    //Tests de la fonction DebutDeuxIdentiques
-    empile(2, &l) ;
-    empile(5, &l) ;
-    empile(5, &l) ;
-    if ( DebutDeuxIdentiques(l)) printf(" DebutDeuxIdentiques True\n"); else printf("false \n");
-    VideListe(&l);
-
-    //Tests de la fonction QueDesZeros
-    empile(0, &l) ;
-    empile(0, &l) ;
-    empile(0, &l) ;
-    empile(0, &l) ;
-    if ( QueDesZeros(l)) printf("QueDesZeros ok\n"); else printf("false \n");
-    VideListe(&l);
-
-    //Tests de la fonction EstPalindrome
-    empile(2, &l) ;
-    empile(1, &l) ;
-    empile(2, &l) ;
-    poup(l);
-
+    initVide(&l) ;
     Liste m;
     initVide(&m);
-    empile(2, &m) ;
-    empile(1, &m) ;
-    empile(2, &m) ;
-    poup(m);
-    if ( EstPalindrome(l,m)) printf("palindrome ok\n"); else printf("false \n");
-    VideListe(&l);
-    VideListe(&m);
 
-    //Tests de la fonction Sous ensemble
-    empile(8, &l) ;
+    /* DebutDeuxIdentiques */
+    printf("Test de la fonction DebutDeuxIdentiques \n");
     empile(2, &l) ;
-    empile(1, &l) ;
+    empile(5, &l) ;
+    empile(5, &l) ;
+    affiche_rec(l);
+    if ( DebutDeuxIdentiques(l)) printf("Vrai \n"); else printf("Faux \n");
+    VideListe(&l);
 
-    empile(18, &m) ;
-    empile(15, &m) ;
-    empile(10, &m) ;
-    empile(8, &m) ;
+    /* QueDesZeros */
+    printf("\nTest de la fonction QueDesZeros \n");
+    empile(0, &l) ;
+    empile(0, &l) ;
+    empile(0, &l) ;
+    empile(0, &l) ;
+    empile(0, &l) ;
+    affiche_rec(l);
+    if ( QueDesZeros(l)) printf("Vrai\n"); else printf("Faux \n");
+    VideListe(&l);
+
+    /* SousEnsemble */
+    printf("\nTests de la fonction SousEnsemble \n" );
+    empile(17, &l) ;
+    empile(6, &l) ;
+    empile(2, &l) ;
+    printf("Liste l : \n");
+    affiche_rec(l);
+
+    empile(33, &m) ;
+    empile(17, &m) ;
+    empile(12, &m) ;
+    empile(7, &m) ;
+    empile(6, &m) ;
+    empile(5, &m) ;
+    empile(4, &m) ;
     empile(2, &m) ;
     empile(1, &m) ;
-    empile(1, &m) ;
-    if ( SousEnsemble(l,m)) printf("l est sous ensemble de m\n"); else printf("l n'est pas sous ensemble de m \n");
+    printf("Liste m : \n");
+    affiche_rec(m);
+    if ( SousEnsemble(l,m)) printf("Vrai \n"); else printf("Faux\n");
     VideListe(&l);
     VideListe(&m);
 
-    //Tests de la fonction MaxZerosConsecutifs
+
+    /* EliminePositionsPaires */
+    printf("\nTest de la fonction EliminePositionsPaires \n");
+    empile(2, &l);
+    empile(1, &l);
+    empile(6, &l);
+    empile(8, &l);
+    empile(8, &l);
+    empile(3, &l);
+    printf("Fonction EliminePositionsPaires Avant : \n");
+    affiche_rec(l);
+    EliminePositionsPaires(&l);
+    printf("Fonction EliminePositionsPaires Après : \n");
+    affiche_rec(l);
+    VideListe(&l);
+
+
+
+    /* MaxZerosConsecutifs */
+    printf("\nTests de la fonction MaxZerosConsecutifs \n");
     empile(9, &l) ;
     empile(7, &l) ;
     empile(0, &l) ;
@@ -410,6 +410,8 @@ int main(int argc, char** argv)
     empile(0, &l) ;
     empile(0, &l) ;
     empile(0, &l) ;
+    empile(0, &l) ;
+    affiche_rec(l);
     printf("MaxZerosConsecutifs en iteratif de l : %d\n", MaxZerosConsecutifs_ite(l));
     printf("MaxZerosConsecutifs en récursif de l : %d\n", MaxZerosConsecutifs_rec(l));
 
@@ -417,27 +419,38 @@ int main(int argc, char** argv)
     empile(8, &m) ;
     empile(2, &m) ;
     empile(9, &m) ;
-	printf("MaxZerosConsecutifs en iteratif de m : %d\n", MaxZerosConsecutifs_ite(m));
-	printf("MaxZerosConsecutifs en récursif de m : %d\n", MaxZerosConsecutifs_rec(m));
-	VideListe(&l);
-    VideListe(&m);
+    affiche_rec(m);
+	  printf("MaxZerosConsecutifs en iteratif de m : %d\n", MaxZerosConsecutifs_ite(m));
+	  printf("MaxZerosConsecutifs en récursif de m : %d\n", MaxZerosConsecutifs_rec(m));
 
-    //Tests de la fonction Supp paire
+
+    /* EstPalindrome */
+    printf("\nTests de la fonction EstPalindrome \n" );
     empile(2, &l) ;
     empile(1, &l) ;
-    empile(6, &l) ;
-    empile(8, &l) ;
-    empile(8, &l) ;
-    empile(3, &l) ;
-    empile(0, &l) ;
-    poup(l);
-    Elimine(&l,8);
-    poup(l);
+    empile(5, &l) ;
+    empile(5, &l) ;
+    empile(1, &l) ;
+    empile(2, &l) ;
+    printf("Liste l : \n");
+    affiche_rec(l);
+    if ( EstPalindrome(l)) printf("Vrai \n"); else printf("Faux\n");
+    VideListe(&l);
+
+
 
     return 0;
 }
 
+/*
+void poup (Liste l)
+{
+        printf("Double Affichage \n") ;
+        affiche_rec(l) ;
+        affiche_iter(l) ;
 
-
-
-
+        printf("Longueur en double %d %d \n\n",
+                           longueur_rec(l),
+                           longueur_iter(l)
+               ) ;
+}*/
