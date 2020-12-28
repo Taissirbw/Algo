@@ -13,7 +13,7 @@ rise and shine sailers, it be LE TP D'ALGO
   - SousEnsemble : OK mais tres moche
   - Permutations : ??
   - EliminePositionsPaires : OK
-  - Begaye : ??
+  - Begaye : OK
   - MaxZerosConsecutif :
   	- iteratif : OK
   	- 2 versions recursives : il en reste une a implémenter "Faire une version recursive avec une sous fonction qui a un argument in et deux arguments out (Comme la version 																		precedente, mais on compte de droite à gauche)"
