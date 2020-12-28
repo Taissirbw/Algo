@@ -252,6 +252,16 @@ bool SousEnsemble (Liste l1, Liste l2){ //Fonction très très trèès moche
 
 }
 
+/*
+List Permutation(int n){
+  List ATPTL(int n, List LL){
+    if (LL == NULL) return [];
+  }
+  if n = 0 return [[]];
+  else return ATPTL(n, Permutation(n-1));
+}
+*/
+
 void EliminePositionsPaires (Liste *l){
   void Aux(Liste *l, int i){
     if (! estVide(*l)){
