@@ -266,6 +266,18 @@ void EliminePositionsPaires (Liste *l){
   Aux(l, 1);
 }
 
+void Begaye(Liste *L){
+  if (! estVide(*L)){
+    if (premier(*L) > 0){
+      Begaye(&((**L).suivant));
+      empile(premier(*L), L);
+    }else{
+      depile(L);
+      Begaye(L);
+    }
+  }
+}
+
 int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 	int count = 0;
 	int max = 0;
@@ -395,7 +407,21 @@ int main(int argc, char** argv){
     affiche_rec(l);
     VideListe(&l);
 
-
+    /* Begaye */
+    printf("\n Test de la fonction Begaye\n");
+    empile(8, &l);
+    empile(8, &l);
+    empile(-2, &l);
+    empile(6, &l);
+    empile(0, &l);
+    empile(1, &l);
+    empile(2, &l);
+    printf("Fonction Begaye Avant : \n");
+    affiche_rec(l);
+    Begaye(&l);
+    printf("Fonction Begaye Après : \n");
+    affiche_rec(l);
+    VideListe(&l);
 
     /* MaxZerosConsecutifs */
     printf("\nTests de la fonction MaxZerosConsecutifs \n");
