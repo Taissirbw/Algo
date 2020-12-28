@@ -314,6 +314,27 @@ int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction
 	Aux(l,0,0);
 }
 
+int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arguments out 
+	int *max;
+	int *count;
+	void Aux (Liste l, int *count, int *max){
+		*max = 0;
+		*count = 0;
+		if(!estVide(l)) {
+			Aux(suite(l),count,max);
+
+			if(premier(l) == 0) {
+				*count += 1;
+			}else{
+				if(*count > *max) *max = *count;
+				*count = 0;
+			}
+		}
+	}
+	Aux (l,count,max);
+	return *max;
+}
+
 bool EstPalindrome(Liste l){
   Liste p;
   initVide(&p);
@@ -440,6 +461,7 @@ int main(int argc, char** argv){
     affiche_rec(l);
     printf("MaxZerosConsecutifs en iteratif de l : %d\n", MaxZerosConsecutifs_ite(l));
     printf("MaxZerosConsecutifs en récursif de l : %d\n", MaxZerosConsecutifs_rec(l));
+    printf("MaxZerosConsecutifs en récursif out de l : %d\n", MaxZerosConsecutifs_out(l));
 
     empile(4, &m) ;
     empile(8, &m) ;
@@ -448,6 +470,7 @@ int main(int argc, char** argv){
     affiche_rec(m);
 	  printf("MaxZerosConsecutifs en iteratif de m : %d\n", MaxZerosConsecutifs_ite(m));
 	  printf("MaxZerosConsecutifs en récursif de m : %d\n", MaxZerosConsecutifs_rec(m));
+	  printf("MaxZerosConsecutifs récursif out de m : %d\n", MaxZerosConsecutifs_out(m));
 
 
     /* EstPalindrome */
