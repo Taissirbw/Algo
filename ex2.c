@@ -309,19 +309,18 @@ int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 }
 
 int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction
-	int Aux(Liste l, int count, int max){
-		while(! estVide(l)){
+	int Aux (Liste l, int count, int max){
+		if(estVide(l)) return max;
+		else{
 			if(premier(l) == 0) {
-			count++;
+				Aux(suite(l),count+1,max);
 			}else{
 				if(count > max) max = count;
-			count = 0;
+				Aux(suite(l),0,max);
 			}
-			l = suite(l);
 		}
-	return max;
 	}
-	Aux(l,0,0);
+	Aux (l,0,0);
 }
 
 int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arguments out 
