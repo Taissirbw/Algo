@@ -294,25 +294,24 @@ int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 	if (estVide(l)) return count;
 	while(! estVide(l)){
 		if(premier(l) == 0) {
-      /*Le compteur augmente de un (1) si la liste contient un zero*/
-			count++;
-		}else{
-      /*max prend le plus grand nombre de zero consécutif trouvé*/
+			count++; //Le compteur augmente de un (1) si la liste contient un zero
 			if(count > max) max = count;
-      /*Le compteur est remis à zéro lorsque l'on rencontre un autre chiffre
-      que zero dans la liste*/
-			count = 0;
+		}else{
+			if(count > max) max = count; //max prend le plus grand nombre de zero consécutif trouvé
+			count = 0; //Le compteur est remis à zéro lorsque l'on rencontre un autre chiffre que zero dans la liste
 		}
 		l = suite(l);
 	}
 	return max;
 }
 
-int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction
+
+int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction (deuxieme version)
 	int Aux (Liste l, int count, int max){
 		if(estVide(l)) return max;
 		else{
 			if(premier(l) == 0) {
+				if(count+1 > max) max = count+1;
 				Aux(suite(l),count+1,max);
 			}else{
 				if(count > max) max = count;
@@ -323,25 +322,29 @@ int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction
 	Aux (l,0,0);
 }
 
-int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arguments out 
-	int *max;
-	int *count;
+int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arg en out (troisieme version)
+	int max;
+	int count;
 	void Aux (Liste l, int *count, int *max){
 		*max = 0;
 		*count = 0;
 		if(!estVide(l)) {
-			Aux(suite(l),count,max);
 
+			Aux(suite(l),count,max);
+			
 			if(premier(l) == 0) {
 				*count += 1;
+				if(*count > *max){ *max = *count; }
 			}else{
-				if(*count > *max) *max = *count;
+				if(*count > *max){ *max = *count; }
 				*count = 0;
 			}
+
 		}
+	
 	}
-	Aux (l,count,max);
-	return *max;
+	Aux (l,&count,&max);
+	return max;
 }
 
 bool EstPalindrome(Liste l){
