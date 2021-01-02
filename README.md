@@ -20,7 +20,7 @@ rise and shine sailers, it be LE TP D'ALGO
   
 3. Arbres : Quadtrees
   - construction : OK
-  - Affichage :
+  - Affichage (à faire en priorité pour pouvoir tester les fonctions de construction)
   	mode normal :
 	mode profondeur :
   - est-noire et est-blanche : fonctions récursives trql
