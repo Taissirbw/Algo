@@ -360,6 +360,25 @@ bool EstPalindrome(Liste l){
   return res;
 }
 
+bool SommeAvantApres(Liste l){
+  int apres;
+  bool res;
+  void Aux(Liste l, int avant, int *apres, bool *res){
+    if (estVide(l)){
+      *res = FALSE;
+      *apres = 0;
+    }else{
+      Aux(suite(l), (avant + premier(l)), apres, res);
+      *res = *res || (avant == *apres);
+      //printf("Premier : %d, Avant : %d, Après : %d, res : %d \n",
+              premier(l), avant, *apres, *res);
+      *apres = *apres + premier(l);
+    }
+  }
+  Aux(l, 0, &apres, &res);
+  return res;
+}
+
 
 /*************************************************/
 /*                                               */
@@ -500,7 +519,18 @@ int main(int argc, char** argv){
     if ( EstPalindrome(l)) printf("Vrai \n"); else printf("Faux\n");
     VideListe(&l);
 
-
+    /* SommeAvantApres */
+    printf("\nTests de la fonction SommeAvantApres \n" );
+    empile(7, &l) ;
+    empile(-2, &l) ;
+    empile(4, &l) ;
+    empile(0, &l) ;
+    empile(3, &l) ;
+    empile(2, &l) ;
+    printf("Liste l : \n");
+    affiche_rec(l);
+    if ( SommeAvantApres(l)) printf("Vrai \n"); else printf("Faux\n");
+    VideListe(&l);
 
     return 0;
 }
