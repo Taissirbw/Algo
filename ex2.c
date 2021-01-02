@@ -370,8 +370,6 @@ bool SommeAvantApres(Liste l){
     }else{
       Aux(suite(l), (avant + premier(l)), apres, res);
       *res = *res || (avant == *apres);
-      //printf("Premier : %d, Avant : %d, Après : %d, res : %d \n",
-              premier(l), avant, *apres, *res);
       *apres = *apres + premier(l);
     }
   }
