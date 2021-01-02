@@ -11,12 +11,10 @@ rise and shine sailers, it be LE TP D'ALGO
   - DebutDeuxIdentiques : OK
   - QueDesZeros : OK
   - SousEnsemble : OK mais tres moche
-  - Permutations : ??
+  - Permutations : ?? Il faut créer un type Liste de liste et définir les fonctions de base pour ce dernier. Ensuite traduire le pseudo code donné par le prof
   - EliminePositionsPaires : OK
   - Begaye : OK
-  - MaxZerosConsecutif :
-  	- iteratif : OK
-  	- 2 versions recursives : il en reste une a implémenter "Faire une version recursive avec une sous fonction qui a un argument in et deux arguments out (Comme la version 																		precedente, mais on compte de droite à gauche)"
+  - MaxZerosConsecutif : OK
   - EstPalindrome : OK
   - SommeAvantApres : s'inspirer de Pif - question 12 du TD2
   
