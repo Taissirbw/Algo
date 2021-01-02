@@ -295,9 +295,8 @@ int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 	while(! estVide(l)){
 		if(premier(l) == 0) {
 			count++; //Le compteur augmente de un (1) si la liste contient un zero
-			if(count > max) max = count;
-		}else{
 			if(count > max) max = count; //max prend le plus grand nombre de zero consécutif trouvé
+		}else{
 			count = 0; //Le compteur est remis à zéro lorsque l'on rencontre un autre chiffre que zero dans la liste
 		}
 		l = suite(l);
@@ -311,11 +310,11 @@ int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction (d
 		if(estVide(l)) return max;
 		else{
 			if(premier(l) == 0) {
-				if(count+1 > max) max = count+1;
-				Aux(suite(l),count+1,max);
-			}else{
+        count = count + 1;
 				if(count > max) max = count;
-				Aux(suite(l),0,max);
+				Aux(suite(l), count, max);
+			}else{
+				Aux(suite(l), 0, max);
 			}
 		}
 	}
@@ -329,21 +328,17 @@ int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction av
 		*max = 0;
 		*count = 0;
 		if(!estVide(l)) {
-
 			Aux(suite(l),count,max);
-			
 			if(premier(l) == 0) {
 				*count += 1;
-				if(*count > *max){ *max = *count; }
+
 			}else{
-				if(*count > *max){ *max = *count; }
 				*count = 0;
 			}
-
+      if(*count > *max) *max = *count;
 		}
-	
 	}
-	Aux (l,&count,&max);
+	Aux (l, &count, &max);
 	return max;
 }
 
@@ -386,6 +381,13 @@ int main(int argc, char** argv){
     empile(2, &l) ;
     empile(5, &l) ;
     empile(5, &l) ;
+    affiche_rec(l);
+    if ( DebutDeuxIdentiques(l)) printf("Vrai \n"); else printf("Faux \n");
+    VideListe(&l);
+    printf("Test de la fonction DebutDeuxIdentiques sur un singleton\n");
+    empile(2, &l) ;
+    //empile(5, &l) ;
+    //empile(5, &l) ;
     affiche_rec(l);
     if ( DebutDeuxIdentiques(l)) printf("Vrai \n"); else printf("Faux \n");
     VideListe(&l);
