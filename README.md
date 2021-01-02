@@ -18,6 +18,11 @@ rise and shine sailers, it be LE TP D'ALGO
   - EstPalindrome : OK
   - SommeAvantApres : OK
   
-  3. Arbres : Quadtrees
-  	- *taïssir has left the chat*
+3. Arbres : Quadtrees
+  - construction : OK
+  - Affichage :
+  	mode normal :
+	mode profondeur :
+  - est-noire et est-blanche : fonctions récursives trql
+  - copie : récursion trql
 
