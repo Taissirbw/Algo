@@ -16,7 +16,7 @@ rise and shine sailers, it be LE TP D'ALGO
   - Begaye : OK
   - MaxZerosConsecutif : OK
   - EstPalindrome : OK
-  - SommeAvantApres : s'inspirer de Pif - question 12 du TD2
+  - SommeAvantApres : OK
   
   3. Arbres : Quadtrees
   	- *taïssir has left the chat*
