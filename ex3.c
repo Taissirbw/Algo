@@ -109,6 +109,12 @@ bool est_noire(image img){
   }
 }
 
+image Copie(image img){
+	if (img == NULL) return construit_blanc();
+	else if (img->toutnoir == true) return construit_noir();
+	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
+}
+
 void nv_carre(image *img){
   *img = construit_composee(construit_composee(construit_blanc(),
                   construit_blanc(), construit_blanc(), construit_noir()),
@@ -177,9 +183,11 @@ void main(int argc, char const *argv[]) {
   nv_pif_blanche(&pif_blanche);
   image pif_noire;
   nv_pif_noire(&pif_noire);
+        
+  printf("Copie : ");
+  affiche_simple(Copie(carre));
 
-
-  printf("Damnier : ");
+  printf("\nDamnier : ");
   affiche_simple(damnier);
 
   printf("\nCarré noir : ");
