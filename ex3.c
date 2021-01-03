@@ -109,41 +109,36 @@ bool est_noire(image img){
   }
 }
 
-/*************************************************/
-/*                                               */
-/*           Main                                */
-/*                                               */
-/*************************************************/
-void main(int argc, char const *argv[]) {
-  construit_blanc();
-  construit_noir();
-  printf("Damnier : ");
-  affiche_simple(construit_composee(construit_noir(), construit_blanc(),
-                construit_noir(), construit_blanc()));
-  printf("\nCarré noir : ");
-  affiche_simple(construit_composee(construit_composee(construit_blanc(),
+void nv_carre(image *img){
+  *img = construit_composee(construit_composee(construit_blanc(),
                   construit_blanc(), construit_blanc(), construit_noir()),
                 construit_composee(construit_blanc(), construit_blanc(),
                                   construit_noir(), construit_blanc()),
                 construit_composee(construit_blanc(), construit_noir(),
                                   construit_blanc(), construit_blanc()),
                 construit_composee(construit_noir(), construit_blanc(),
-                              construit_blanc(), construit_blanc())));
+                              construit_blanc(), construit_blanc()));
+}
 
-  printf("\nProfondeur : ");
-  affiche_profondeur(
-    construit_composee(construit_noir(),
-        construit_composee(construit_blanc(), construit_blanc(),
-        construit_noir(), construit_blanc()),
-        construit_blanc(),
-            construit_composee(construit_noir(),
-                construit_composee(construit_noir(), construit_noir(), construit_blanc(),
-                    construit_composee(construit_noir(), construit_blanc(), construit_noir(),
-                                        construit_noir())),
-                    construit_blanc(), construit_noir())));
-  printf("\n");
-  printf("est_blanche\n");
-  if (est_blanche(construit_composee(construit_blanc(),
+void nv_damnier(image *img){
+  *img = construit_composee(construit_noir(), construit_blanc(),
+                construit_noir(), construit_blanc());
+}
+
+void nv_pif(image *img){
+  *img = construit_composee(construit_noir(),
+      construit_composee(construit_blanc(), construit_blanc(),
+      construit_noir(), construit_blanc()),
+      construit_blanc(),
+          construit_composee(construit_noir(),
+              construit_composee(construit_noir(), construit_noir(), construit_blanc(),
+                  construit_composee(construit_noir(), construit_blanc(), construit_noir(),
+                                      construit_noir())),
+                  construit_blanc(), construit_noir()));
+}
+
+void nv_pif_blanche(image *img){
+  *img = construit_composee(construit_blanc(),
       construit_composee(construit_blanc(), construit_blanc(),
       construit_blanc(), construit_blanc()),
       construit_blanc(),
@@ -151,19 +146,57 @@ void main(int argc, char const *argv[]) {
               construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
                   construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
                                       construit_blanc())),
-                  construit_blanc(), construit_blanc())))) printf("Vrai\n");
-  else printf("Faux\n");
+                  construit_blanc(), construit_blanc()));
+}
 
-  printf("est_noire\n");
-  if (est_noire(construit_composee(construit_noir(),
+void nv_pif_noire(image *img){
+  construit_composee(construit_noir(),
       construit_composee(construit_noir(), construit_noir(),
       construit_noir(), construit_noir()),
       construit_noir(),
           construit_composee(construit_noir(),
               construit_composee(construit_noir(), construit_noir(), construit_noir(),
                   construit_composee(construit_noir(), construit_noir(), construit_noir(),
-                                      construit_noir())),
-                  construit_noir(), construit_noir())))) printf("Vrai\n");
+                                      construit_noir()))),
+                  construit_noir(), construit_noir()));
+}
+
+/*************************************************/
+/*                                               */
+/*           Main                                */
+/*                                               */
+/*************************************************/
+void main(int argc, char const *argv[]) {
+  image damnier;
+  nv_damnier(&damnier);
+  image carre;
+  nv_carre(&carre);
+  image pif;
+  nv_pif(&pif);
+  image pif_blanche;
+  nv_pif_blanche(&pif_blanche);
+  image pif_noire;
+  nv_pif_noire(&pif_noire);
+
+
+  printf("Damnier : ");
+  affiche_simple(damnier);
+
+  printf("\nCarré noir : ");
+  affiche_simple(carre);
+
+  printf("\nProfondeur : ");
+  affiche_profondeur(pif);
+  printf("\n");
+
+  affiche_simple(pif_blanche);
+  printf("\nest_blanche ? ");
+  if (est_blanche(pif_blanche)) printf("Vrai\n");
+  else printf("Faux\n");
+
+  affiche_simple(pif_noire);
+  printf("\nest_noire ? ");
+  if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
   printf("\n");
