@@ -122,9 +122,7 @@ void Negatif(image *img){
 	else if(est_blanche(*img)) *img = construit_noir();
 	else{
 		for (int i = 0; i < 4; ++i)
-		{
 			Negatif(&((*img)->fils[i]));
-		};
 	}
 	
 }
