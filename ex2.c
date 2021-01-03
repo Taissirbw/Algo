@@ -377,23 +377,14 @@ bool SommeAvantApres(Liste l){
   return res;
 }
 
-
 /*************************************************/
 /*                                               */
-/*           Main                                */
+/*            TESTS                              */
 /*                                               */
 /*************************************************/
-int main(int argc, char** argv){
 
+void Test_DebutDeuxIdentiques(Liste l){
 
-
-/**--------------------TEST DES FONCTIONS ET PROCEDURES--------------------**/
-    Liste l ;
-    initVide(&l) ;
-    Liste m;
-    initVide(&m);
-
-    /* DebutDeuxIdentiques */
     printf("Test de la fonction DebutDeuxIdentiques \n");
     empile(2, &l) ;
     empile(5, &l) ;
@@ -409,7 +400,10 @@ int main(int argc, char** argv){
     if ( DebutDeuxIdentiques(l)) printf("Vrai \n"); else printf("Faux \n");
     VideListe(&l);
 
-    /* QueDesZeros */
+}
+
+void Test_QueDesZeros(Liste l){
+
     printf("\nTest de la fonction QueDesZeros \n");
     empile(0, &l) ;
     empile(0, &l) ;
@@ -420,7 +414,10 @@ int main(int argc, char** argv){
     if ( QueDesZeros(l)) printf("Vrai\n"); else printf("Faux \n");
     VideListe(&l);
 
-    /* SousEnsemble */
+}
+
+void Test_SousEnsemble(Liste l, Liste m){
+
     printf("\nTests de la fonction SousEnsemble \n" );
     empile(17, &l) ;
     empile(6, &l) ;
@@ -443,8 +440,10 @@ int main(int argc, char** argv){
     VideListe(&l);
     VideListe(&m);
 
+}
 
-    /* EliminePositionsPaires */
+void Test_EliminePositionsPaires(Liste l){
+
     printf("\nTest de la fonction EliminePositionsPaires \n");
     empile(2, &l);
     empile(1, &l);
@@ -459,7 +458,10 @@ int main(int argc, char** argv){
     affiche_rec(l);
     VideListe(&l);
 
-    /* Begaye */
+}
+
+void Test_Begaye(Liste l){
+
     printf("\n Test de la fonction Begaye\n");
     empile(8, &l);
     empile(8, &l);
@@ -475,7 +477,10 @@ int main(int argc, char** argv){
     affiche_rec(l);
     VideListe(&l);
 
-    /* MaxZerosConsecutifs */
+}
+
+void Test_MaxZerosConsecutifs(Liste l, Liste m){
+
     printf("\nTests de la fonction MaxZerosConsecutifs \n");
     empile(9, &l) ;
     empile(7, &l) ;
@@ -503,8 +508,10 @@ int main(int argc, char** argv){
 	  printf("MaxZerosConsecutifs en récursif de m : %d\n", MaxZerosConsecutifs_rec(m));
 	  printf("MaxZerosConsecutifs récursif out de m : %d\n", MaxZerosConsecutifs_out(m));
 
+}
 
-    /* EstPalindrome */
+void Test_EstPalindrome(Liste l){
+
     printf("\nTests de la fonction EstPalindrome \n" );
     empile(2, &l) ;
     empile(1, &l) ;
@@ -517,7 +524,10 @@ int main(int argc, char** argv){
     if ( EstPalindrome(l)) printf("Vrai \n"); else printf("Faux\n");
     VideListe(&l);
 
-    /* SommeAvantApres */
+}
+
+void Test_SommeAvantApres(Liste l){
+
     printf("\nTests de la fonction SommeAvantApres \n" );
     empile(7, &l) ;
     empile(-2, &l) ;
@@ -530,6 +540,38 @@ int main(int argc, char** argv){
     if ( SommeAvantApres(l)) printf("Vrai \n"); else printf("Faux\n");
     VideListe(&l);
 
+}
+
+
+/*************************************************/
+/*                                               */
+/*           Main                                */
+/*                                               */
+/*************************************************/
+int main(int argc, char** argv){
+
+/**--------------------TEST DES FONCTIONS ET PROCEDURES--------------------**/
+    Liste l ;
+    initVide(&l) ;
+    Liste m;
+    initVide(&m);
+
+    Test_DebutDeuxIdentiques(l);
+
+    Test_QueDesZeros(l);
+
+    Test_SousEnsemble(l,m);
+
+    Test_EliminePositionsPaires(l);
+
+    Test_Begaye(l);
+
+    Test_MaxZerosConsecutifs(l,m);
+
+    Test_EstPalindrome(l);
+
+    Test_SommeAvantApres(l);
+
     return 0;
 }
 
@@ -539,7 +581,6 @@ void poup (Liste l)
         printf("Double Affichage \n") ;
         affiche_rec(l) ;
         affiche_iter(l) ;
-
         printf("Longueur en double %d %d \n\n",
                            longueur_rec(l),
                            longueur_iter(l)
