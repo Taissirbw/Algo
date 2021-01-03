@@ -1,10 +1,12 @@
 # Algo
 rise and shine sailers, it be LE TP D'ALGO
 
+Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dans le main (pour l'exercie 3 : faire un truc mieux)
+
 1. Quelques Calculs simples
   - Calcul de e : OK (complexités nulles)
   - Fonction puissance
-  - Deux methodes pour Ackermann
+  - Deux methodes pour Ackermann : cf image où il y a le pseudo code
   - Suite xn
 	
 2. Listes-Piles et Files
@@ -23,6 +25,6 @@ rise and shine sailers, it be LE TP D'ALGO
   - Affichage (à faire en priorité pour pouvoir tester les fonctions de construction)
   	mode normal : OK
 	mode profondeur : OK
-  - est-noire et est-blanche : fonctions récursives trql
+  - est-noire et est-blanche : OK
   - copie : récursion trql
 
