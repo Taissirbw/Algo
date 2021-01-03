@@ -157,7 +157,7 @@ void nv_pif_noire(image *img){
           construit_composee(construit_noir(),
               construit_composee(construit_noir(), construit_noir(), construit_noir(),
                   construit_composee(construit_noir(), construit_noir(), construit_noir(),
-                                      construit_noir()))),
+                                      construit_noir())),
                   construit_noir(), construit_noir()));
 }
 
