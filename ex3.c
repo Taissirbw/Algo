@@ -33,8 +33,9 @@ typedef bloc_image *image;
 /*************************************************/
 
 image construit_blanc(){
-  image i = (image) malloc(sizeof(bloc_image));
-  i = NULL;
+  image img = (image) malloc(sizeof(bloc_image));
+  img = NULL;
+  return img;
 }
 
 image construit_noir(){
@@ -43,6 +44,7 @@ image construit_noir(){
   for(int i=0; i<4; i++){
     img->fils[i] = NULL;
   }
+  return img;
 }
 
 image construit_composee(image i1, image i2, image i3, image i4){
@@ -54,6 +56,37 @@ image construit_composee(image i1, image i2, image i3, image i4){
   img->fils[3] = i4;
 }
 
+void affiche_simple(image img){
+  if (img == NULL) printf("B");
+  else{
+    if (img->toutnoir == true) printf("N");
+    else{
+      printf(".");
+      for(int i=0; i<4; i++){
+        affiche_simple(img->fils[i]);
+        printf(" ");
+      }
+    }
+  }
+}
+
+void affiche_profondeur(image img){
+  void Aux(image img, int p){
+    if (img == NULL) printf("B%d", p);
+    else{
+      if (img->toutnoir == true) printf("N%d", p);
+      else{
+        printf(".%d", p);
+        for(int i=0; i<4; i++){
+          Aux(img->fils[i], p+1);
+          printf(" ");
+        }
+      }
+    }
+  }
+  Aux(img, 0);
+}
+
 
 /*************************************************/
 /*                                               */
@@ -63,6 +96,29 @@ image construit_composee(image i1, image i2, image i3, image i4){
 void main(int argc, char const *argv[]) {
   construit_blanc();
   construit_noir();
-  construit_composee(construit_noir(), construit_blanc(), construit_noir(),
-                      construit_blanc());
+  printf("Damnier : ");
+  affiche_simple(construit_composee(construit_noir(), construit_blanc(),
+                construit_noir(), construit_blanc()));
+  printf("\nCarré noir : ");
+  affiche_simple(construit_composee(construit_composee(construit_blanc(),
+                  construit_blanc(), construit_blanc(), construit_noir()),
+                construit_composee(construit_blanc(), construit_blanc(),
+                                  construit_noir(), construit_blanc()),
+                construit_composee(construit_blanc(), construit_noir(),
+                                  construit_blanc(), construit_blanc()),
+                construit_composee(construit_noir(), construit_blanc(),
+                              construit_blanc(), construit_blanc())));
+
+  printf("\nProfondeur : ");
+  affiche_profondeur(
+    construit_composee(construit_noir(),
+        construit_composee(construit_blanc(), construit_blanc(),
+        construit_noir(), construit_blanc()),
+        construit_blanc(),
+            construit_composee(construit_noir(),
+                construit_composee(construit_noir(), construit_noir(), construit_blanc(),
+                    construit_composee(construit_noir(), construit_blanc(), construit_noir(),
+                                        construit_noir())),
+                    construit_blanc(), construit_noir())));
+  printf("\n");
 }
