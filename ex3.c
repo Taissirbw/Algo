@@ -117,6 +117,18 @@ image Copie(image img){
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
+void Negatif(image *img){
+	if(est_noire(*img)) *img = construit_blanc();
+	else if(est_blanche(*img)) *img = construit_noir();
+	else{
+		for (int i = 0; i < 4; ++i)
+		{
+			Negatif(&((*img)->fils[i]));
+		};
+	}
+	
+}
+
 void nv_carre(image *img){
   *img = construit_composee(construit_composee(construit_blanc(),
                   construit_blanc(), construit_blanc(), construit_noir()),
@@ -209,5 +221,11 @@ void main(int argc, char const *argv[]) {
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
+  printf("\nNegatif avant : ");
+  affiche_simple(carre);
+  printf("\nNegatif apres : ");
+  Negatif(&carre);
+  affiche_simple(carre);
+	
   printf("\n");
 }
