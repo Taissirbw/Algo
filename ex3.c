@@ -112,7 +112,7 @@ bool est_noire(image img){
 image Copie(image img){
 	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(),
 						   construit_blanc(),construit_blanc());
-	else if (img->toutnoir == true) return construit_composee(construit_noir(),construit_noir(),
+	else if (img->toutnoir) return construit_composee(construit_noir(),construit_noir(),
 								  construit_noir(),construit_noir());
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
