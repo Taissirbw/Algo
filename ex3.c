@@ -76,7 +76,7 @@ void affiche_profondeur(image img){
     else{
       if (img->toutnoir == true) printf("N%d", p);
       else{
-        printf(".%d", p);
+        printf(". %d", p);
         for(int i=0; i<4; i++){
           Aux(img->fils[i], p+1);
           printf(" ");
@@ -87,6 +87,27 @@ void affiche_profondeur(image img){
   Aux(img, 0);
 }
 
+bool est_blanche(image img){
+  if (img == NULL) return true;
+  else{
+    if (img->toutnoir == true) return false;
+    else{
+      return (est_blanche(img->fils[0]) && est_blanche(img->fils[1])
+              && est_blanche(img->fils[2]) && est_blanche(img->fils[3]));
+    }
+  }
+}
+
+bool est_noire(image img){
+  if (img == NULL) return false;
+  else{
+    if (img->toutnoir == true) return true;
+    else{
+      return (est_noire(img->fils[0]) && est_noire(img->fils[1])
+              && est_noire(img->fils[2]) && est_noire(img->fils[3]));
+    }
+  }
+}
 
 /*************************************************/
 /*                                               */
@@ -120,5 +141,30 @@ void main(int argc, char const *argv[]) {
                     construit_composee(construit_noir(), construit_blanc(), construit_noir(),
                                         construit_noir())),
                     construit_blanc(), construit_noir())));
+  printf("\n");
+  printf("est_blanche\n");
+  if (est_blanche(construit_composee(construit_blanc(),
+      construit_composee(construit_blanc(), construit_blanc(),
+      construit_blanc(), construit_blanc()),
+      construit_blanc(),
+          construit_composee(construit_blanc(),
+              construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
+                  construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
+                                      construit_blanc())),
+                  construit_blanc(), construit_blanc())))) printf("Vrai\n");
+  else printf("Faux\n");
+
+  printf("est_noire\n");
+  if (est_noire(construit_composee(construit_noir(),
+      construit_composee(construit_noir(), construit_noir(),
+      construit_noir(), construit_noir()),
+      construit_noir(),
+          construit_composee(construit_noir(),
+              construit_composee(construit_noir(), construit_noir(), construit_noir(),
+                  construit_composee(construit_noir(), construit_noir(), construit_noir(),
+                                      construit_noir())),
+                  construit_noir(), construit_noir())))) printf("Vrai\n");
+  else printf("Faux\n");
+
   printf("\n");
 }
