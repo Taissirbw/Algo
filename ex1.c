@@ -27,11 +27,14 @@ double calc_e(double k, double acc){
 }
 
 /* Fonction récursive terminale élevant x à la puissance n
-(n étant un entier positif ou null).
-L'accumulateur acc doit être initialisé à 0 lors de l'appel de fonction*/
-double puissance(double x, double n, double acc){
-  if (n == 0) return acc;
-  else return puissance(x, n-1, x*acc);
+(n étant un entier positif ou null).*/
+double puissance(double x, int n){
+  if (n == 0) return 1;
+  else {
+    double y = puissance(x, n/2);
+    if ((n%2) == 0) return y * y;
+    else return y * y * x;
+  }
 }
 
 
@@ -43,7 +46,7 @@ void main(int argc, char const *argv[]) {
   int k = 5;
   for (int i = 0; i < k; i++){
   printf("(1 + 10^%d)^10^%d : %f\n", -i, i,
-        puissance((1 + 1/puissance(10, i, 1)), puissance(10, i, 1), 1)) ;
+        puissance((1 + 1/puissance(10, i)), puissance(10, i))) ;
   }
-  return 0;
+  //return 0;
 }
