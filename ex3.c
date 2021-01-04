@@ -143,20 +143,20 @@ void rendmemoire(image *img){
 /*image Difference(image i1, image i2){
 	image res;
 
-	if(est_noire(i1) && est_noire(i2)) 
+	if(est_noire(i1) && est_noire(i2))
 		res = construit_blanc();
 	else if (est_blanche(i1) && est_blanche(i2))
 		res = construit_blanc();
-	else if(est_blanche(i1) && est_noire(i2)) 
+	else if(est_blanche(i1) && est_noire(i2))
 		res = construit_noir();
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
 	else if(i1==NULL && !(i2==NULL)) res = construit_noir();
 	else if (!(i1==NULL) && i2==NULL) res = construit_noir();
-	else{ 
+	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
-	
+
 	}
 	return res;
 }*/
@@ -193,39 +193,87 @@ void nv_damnier(image *img){
 }
 
 void nv_pif(image *img){
-  *img = construit_composee(construit_noir(),
-      construit_composee(construit_blanc(), construit_blanc(),
-      construit_noir(), construit_blanc()),
+  *img = construit_composee(
+      construit_noir(),
+      construit_composee(
+            construit_blanc(),
+            construit_blanc(),
+            construit_noir(),
+            construit_blanc()
+      ),
       construit_blanc(),
-          construit_composee(construit_noir(),
-              construit_composee(construit_noir(), construit_noir(), construit_blanc(),
-                  construit_composee(construit_noir(), construit_blanc(), construit_noir(),
-                                      construit_noir())),
-                  construit_blanc(), construit_noir()));
+      construit_composee(
+            construit_noir(),
+            construit_composee(
+                    construit_noir(),
+                    construit_noir(),
+                    construit_blanc(),
+                    construit_composee(
+                            construit_noir(),
+                            construit_blanc(),
+                            construit_noir(),
+                            construit_noir())
+                    ),
+            construit_blanc(),
+            construit_noir()
+          )
+  );
 }
 
 void nv_pif_blanche(image *img){
-  *img = construit_composee(construit_blanc(),
-      construit_composee(construit_blanc(), construit_blanc(),
-      construit_blanc(), construit_blanc()),
+  *img = construit_composee(
       construit_blanc(),
-          construit_composee(construit_blanc(),
-              construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
-                  construit_composee(construit_blanc(), construit_blanc(), construit_blanc(),
-                                      construit_blanc())),
-                  construit_blanc(), construit_blanc()));
+      construit_composee(
+            construit_blanc(),
+            construit_blanc(),
+            construit_blanc(),
+            construit_blanc()
+      ),
+      construit_blanc(),
+      construit_composee(
+            construit_blanc(),
+            construit_composee(
+                    construit_blanc(),
+                    construit_blanc(),
+                    construit_blanc(),
+                    construit_composee(
+                            construit_blanc(),
+                            construit_blanc(),
+                            construit_blanc(),
+                            construit_blanc())
+                    ),
+            construit_blanc(),
+            construit_blanc()
+          )
+  );
 }
 
 void nv_pif_noire(image *img){
-  construit_composee(construit_noir(),
-      construit_composee(construit_noir(), construit_noir(),
-      construit_noir(), construit_noir()),
+  *img = construit_composee(
       construit_noir(),
-          construit_composee(construit_noir(),
-              construit_composee(construit_noir(), construit_noir(), construit_noir(),
-                  construit_composee(construit_noir(), construit_noir(), construit_noir(),
-                                      construit_noir())),
-                  construit_noir(), construit_noir()));
+      construit_composee(
+            construit_noir(),
+            construit_noir(),
+            construit_noir(),
+            construit_noir()
+      ),
+      construit_noir(),
+      construit_composee(
+            construit_noir(),
+            construit_composee(
+                    construit_noir(),
+                    construit_noir(),
+                    construit_noir(),
+                    construit_composee(
+                            construit_noir(),
+                            construit_noir(),
+                            construit_noir(),
+                            construit_blanc())
+                    ),
+            construit_noir(),
+            construit_noir()
+          )
+  );
 }
 
 /*************************************************/
@@ -245,33 +293,36 @@ void main(int argc, char const *argv[]) {
   image pif_noire;
   nv_pif_noire(&pif_noire);
 
+
   printf("Damnier : ");
   affiche_simple(damnier);
 
   printf("Carré noir : ");
   affiche_simple(carre);
 
-  printf("Profondeur : ");
+  printf("Profondeur : \n");
   affiche_profondeur(pif);
 
+  printf("\nTest est_blanche et est_noire : \n");
   affiche_simple(pif_blanche);
   printf("est_blanche ? ");
   if (est_blanche(pif_blanche)) printf("Vrai\n");
   else printf("Faux\n");
 
   affiche_simple(pif_noire);
+  affiche_profondeur(pif_noire);
   printf("est_noire ? ");
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
   //rendmemoire(&pif);
 
-  printf("Copie : \n");
+  printf("\nTest Copie : \n");
   affiche_simple(pif);
   affiche_simple(Copie(pif));
-	
-  printf("\nDifference : ");	
-  affiche_simple(Difference(carre,carre));
+
+  //printf("\nDifference : ");
+  //affiche_simple(Difference(carre,carre));
 
   printf("Negatif avant : ");
   affiche_simple(carre);
