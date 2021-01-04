@@ -27,5 +27,16 @@ Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dan
   	mode normal : OK
 	mode profondeur : OK
   - est-noire et est-blanche : OK
-  - copie : récursion trql
-
+  - copie : OK
+  - aire :
+  - meme_dessin :
+  - difference :
+  - rendmemoire : Je comprend rien sa mère mais j'y travaille
+  - lecture_clavier :
+  - CompteSousImagesPleines :
+  - arrondit :
+  - négatif : Ok
+  - simplifie :
+  - affichage :
+  - alea :
+  - nebuleuse :
