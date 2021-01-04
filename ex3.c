@@ -140,6 +140,23 @@ void rendmemoire(image *img){
 }
 */
 
+/*image Difference(image i1, image i2){
+	image res;
+
+	if(est_noire(i1) && est_noire(i2)) 
+		res = construit_blanc();
+	else if (est_blanche(i1) && est_blanche(i2))
+		res = construit_blanc();
+	else if(est_blanche(i1) && est_noire(i2)) 
+		res = construit_noir();
+	else if (est_noire(i1) && est_blanche(i2))
+		res = construit_noir();
+	else{ 
+		if()
+		return res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
+		 					Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
+}*/
+
 void Negatif(image *img){
 	if(est_noire(*img)) *img = construit_blanc();
 	else if(est_blanche(*img)) *img = construit_noir();
@@ -248,6 +265,9 @@ void main(int argc, char const *argv[]) {
   printf("Copie : \n");
   affiche_simple(pif);
   affiche_simple(Copie(pif));
+	
+  printf("\nMeme_dessin : ");
+  if(Meme_dessin(carre,carre)) printf("oui\n"); else printf("no\n");
 
   printf("Negatif avant : ");
   affiche_simple(carre);
