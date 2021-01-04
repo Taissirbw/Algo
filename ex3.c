@@ -32,9 +32,11 @@ typedef bloc_image *image;
 /*                                               */
 /*************************************************/
 
+/*------------------ Constructions d'images -------------------------------*/
+
 image construit_blanc(){
-  image img = (image) malloc(sizeof(bloc_image));
-  img = NULL;
+  //image img = (image) malloc(sizeof(bloc_image));
+  image img = NULL;
   return img;
 }
 
@@ -56,18 +58,24 @@ image construit_composee(image i1, image i2, image i3, image i4){
   img->fils[3] = i4;
 }
 
+/*------------------ Affichages d'images -------------------------------*/
+
 void affiche_simple(image img){
-  if (img == NULL) printf("B");
-  else{
-    if (img->toutnoir == true) printf("N");
+  void Aux(image img){
+    if (img == NULL) printf("B");
     else{
-      printf(".");
-      for(int i=0; i<4; i++){
-        affiche_simple(img->fils[i]);
-        printf(" ");
+      if (img->toutnoir == true) printf("N");
+      else{
+        printf(".");
+        for(int i=0; i<4; i++){
+          Aux(img->fils[i]);
+          printf(" ");
+        }
       }
     }
   }
+  Aux(img);
+  printf("\n");
 }
 
 void affiche_profondeur(image img){
@@ -85,7 +93,10 @@ void affiche_profondeur(image img){
     }
   }
   Aux(img, 0);
+  printf("\n");
 }
+
+/*--------------------------------------------------------------*/
 
 bool est_blanche(image img){
   if (img == NULL) return true;
@@ -117,6 +128,18 @@ image Copie(image img){
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
+/*
+void rendmemoire(image *img){
+  if (! (*img == NULL) ){
+    //free(&(*img)->toutnoir);
+    for (int i = 0; i < 4; ++i){
+      rendmemoire(&((*img)->fils[i]));
+    }
+    free(img);
+  }
+}
+*/
+
 void Negatif(image *img){
 	if(est_noire(*img)) *img = construit_blanc();
 	else if(est_blanche(*img)) *img = construit_noir();
@@ -124,8 +147,13 @@ void Negatif(image *img){
 		for (int i = 0; i < 4; ++i)
 			Negatif(&((*img)->fils[i]));
 	}
-	
 }
+
+/*************************************************/
+/*                Créations d'images             */
+/*            pour tester les fonctions et       */
+/*                   procédures                  */
+/*************************************************/
 
 void nv_carre(image *img){
   *img = construit_composee(construit_composee(construit_blanc(),
@@ -195,35 +223,36 @@ void main(int argc, char const *argv[]) {
   nv_pif_blanche(&pif_blanche);
   image pif_noire;
   nv_pif_noire(&pif_noire);
-        
-  printf("Copie : ");
-  affiche_simple(Copie(carre));
 
-  printf("\nDamnier : ");
+  printf("Damnier : ");
   affiche_simple(damnier);
 
-  printf("\nCarré noir : ");
+  printf("Carré noir : ");
   affiche_simple(carre);
 
-  printf("\nProfondeur : ");
+  printf("Profondeur : ");
   affiche_profondeur(pif);
-  printf("\n");
 
   affiche_simple(pif_blanche);
-  printf("\nest_blanche ? ");
+  printf("est_blanche ? ");
   if (est_blanche(pif_blanche)) printf("Vrai\n");
   else printf("Faux\n");
 
   affiche_simple(pif_noire);
-  printf("\nest_noire ? ");
+  printf("est_noire ? ");
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
-  printf("\nNegatif avant : ");
+  //rendmemoire(&pif);
+
+  printf("Copie : \n");
+  affiche_simple(pif);
+  affiche_simple(Copie(pif));
+
+  printf("Negatif avant : ");
   affiche_simple(carre);
-  printf("\nNegatif apres : ");
+  printf("Negatif apres : ");
   Negatif(&carre);
   affiche_simple(carre);
-	
-  printf("\n");
+
 }
