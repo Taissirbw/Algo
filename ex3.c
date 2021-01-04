@@ -266,8 +266,7 @@ void main(int argc, char const *argv[]) {
   affiche_simple(pif);
   affiche_simple(Copie(pif));
 	
-  printf("\nMeme_dessin : ");
-  if(Meme_dessin(carre,carre)) printf("oui\n"); else printf("no\n");
+  affiche_simple(Difference(carre,carre));
 
   printf("Negatif avant : ");
   affiche_simple(carre);
