@@ -35,7 +35,6 @@ typedef bloc_image *image;
 /*------------------ Constructions d'images -------------------------------*/
 
 image construit_blanc(){
-  //image img = (image) malloc(sizeof(bloc_image));
   image img = NULL;
   return img;
 }
@@ -128,7 +127,7 @@ image Copie(image img){
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
-/*
+
 void rendmemoire(image *img){
   if (! (*img == NULL) ){
     //free(&(*img)->toutnoir);
@@ -138,7 +137,7 @@ void rendmemoire(image *img){
     free(img);
   }
 }
-*/
+
 
 /*image Difference(image i1, image i2){
 	image res;
@@ -268,7 +267,7 @@ void nv_pif_noire(image *img){
                             construit_noir(),
                             construit_noir(),
                             construit_noir(),
-                            construit_blanc())
+                            construit_noir())
                     ),
             construit_noir(),
             construit_noir()
@@ -310,7 +309,6 @@ void main(int argc, char const *argv[]) {
   else printf("Faux\n");
 
   affiche_simple(pif_noire);
-  affiche_profondeur(pif_noire);
   printf("est_noire ? ");
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
