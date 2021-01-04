@@ -152,10 +152,12 @@ void rendmemoire(image *img){
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
 	else{ 
-	
-		return res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
-		 					Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
-							}
+		if(i1!=NULL && i2!= NULL){
+			res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
+		 				Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
+		}
+	}
+	return res;
 }*/
 
 void Negatif(image *img){
