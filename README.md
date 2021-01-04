@@ -6,7 +6,7 @@ Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dan
 
 1. Quelques Calculs simples
   - Calcul de e : OK (complexités nulles)
-  - Fonction puissance
+  - Fonction puissance : OK
   - Deux methodes pour Ackermann : cf image où il y a le pseudo code
   - Suite xn
 	
