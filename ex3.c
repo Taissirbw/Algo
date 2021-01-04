@@ -155,6 +155,7 @@ void rendmemoire(image *img){
 	
 		return res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 					Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
+							}
 }*/
 
 void Negatif(image *img){
