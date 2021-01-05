@@ -120,10 +120,10 @@ bool est_noire(image img){
 }
 
 image Copie(image img){
-	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(),
+	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(), 
 						   construit_blanc(),construit_blanc());
 	else if (img->toutnoir) return construit_composee(construit_noir(),construit_noir(),
-								  construit_noir(),construit_noir());
+							  construit_noir(),construit_noir());
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
@@ -132,7 +132,7 @@ bool meme_dessin(image i1, image i2){
     if (i1->toutnoir) return est_noire(i2);
     else return (meme_dessin(i1->fils[0],i2->fils[0]) &&
                 meme_dessin(i1->fils[1],i2->fils[1]) &&
-      		 			meme_dessin(i1->fils[2],i2->fils[2]) &&
+      		meme_dessin(i1->fils[2],i2->fils[2]) &&
                 meme_dessin(i1->fils[3],i2->fils[3]));
   } else {
     return est_blanche(i2);
@@ -149,8 +149,8 @@ image Difference(image i1, image i2){
 		res = construit_noir();
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
-  else if(i1==NULL && !(i2==NULL)) res = construit_noir();
-  else if (!(i1==NULL) && i2==NULL) res = construit_noir();
+ 	 else if(i1==NULL && !(i2==NULL)) res = construit_noir();
+  	else if (!(i1==NULL) && i2==NULL) res = construit_noir();
 	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
@@ -193,11 +193,12 @@ image lecture(){
 }
 
 void Negatif(image *img){
-	if(est_noire(*img)) *img = construit_blanc();
-	else if(est_blanche(*img)) *img = construit_noir();
+	
+	if(est_noire(*img)) *img = construit_blanc(); //Inverse en blanc
+	else if(est_blanche(*img)) *img = construit_noir(); //Inverse en noir
 	else{
 		for (int i = 0; i < 4; ++i)
-			Negatif(&((*img)->fils[i]));
+			Negatif(&((*img)->fils[i])); //Appel récursif sur les fils
 	}
 }
 
@@ -408,7 +409,7 @@ void main(int argc, char const *argv[]) {
   printf("Carre et carre : ");
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
-  printf("Carre et damnier : ");
+  printf("Carre et damier : ");
   if (meme_dessin(carre,damier)) printf("Vrai\n");
   else printf("Faux\n");
   printf("pif noire et pif blanche : ");
