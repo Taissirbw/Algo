@@ -23,13 +23,13 @@ Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dan
   
 3. Arbres : Quadtrees
   - construction : OK
-  - Affichage (à faire en priorité pour pouvoir tester les fonctions de construction)
+  - Affichage 
   	mode normal : OK
 	mode profondeur : OK
   - est-noire et est-blanche : OK
   - copie : OK
   - aire :
-  - meme_dessin :
+  - meme_dessin : OK
   - difference :
   - rendmemoire : Je comprend rien sa mère mais j'y travaille
   - lecture_clavier :
