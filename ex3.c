@@ -129,28 +129,35 @@ image Copie(image img){
 
 bool meme_dessin(image i1, image i2){
   if(! (i1 == NULL)){
-    if (i1->toutnoir) return est_noire(i2);
+    if (i1->toutnoir) return est_noire(i2); //On teste si les deux images sont noires
     else return (meme_dessin(i1->fils[0],i2->fils[0]) &&
                 meme_dessin(i1->fils[1],i2->fils[1]) &&
       		meme_dessin(i1->fils[2],i2->fils[2]) &&
-                meme_dessin(i1->fils[3],i2->fils[3]));
+                meme_dessin(i1->fils[3],i2->fils[3])); //Appel récursif sur les fils
   } else {
-    return est_blanche(i2);
+    return est_blanche(i2); //On teste si les deux images sont blanches
   }
 }
 
 image Difference(image i1, image i2){
 	image res;
-	if(est_noire(i1) && est_noire(i2))
+	
+	//Cas où les images sont de meme couleurs :
+	if(est_noire(i1) && est_noire(i2)) 
 		res = construit_blanc();
 	else if (est_blanche(i1) && est_blanche(i2))
 		res = construit_blanc();
+	
+	//Cas où les images sont de couleurs différentes
 	else if(est_blanche(i1) && est_noire(i2))
 		res = construit_noir();
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
+	
+	//Cas où les images n'ont pas la meme profondeur
  	 else if(i1==NULL && !(i2==NULL)) res = construit_noir();
   	else if (!(i1==NULL) && i2==NULL) res = construit_noir();
+	
 	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
