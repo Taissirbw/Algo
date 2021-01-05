@@ -2,7 +2,6 @@
 rise and shine sailers, it be LE TP D'ALGO
 
 Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dans le main (pour l'exercie 3 : faire un truc mieux)
- - j'essaie de faire des test propores pour quadtrees mais je glr un peu!! j'ai mis sur le git si tu veux, moi je vais faire une petite siete!)
 
 1. Quelques Calculs simples
   - Calcul de e : OK (complexités nulles)
