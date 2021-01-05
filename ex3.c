@@ -34,11 +34,17 @@ typedef bloc_image *image;
 
 /*------------------ Constructions d'images -------------------------------*/
 
+/********************/
+/*  construit_blanc */
+/********************/
 image construit_blanc(){
   image img = NULL;
   return img;
 }
 
+/********************/
+/*  construit_noir  */
+/********************/
 image construit_noir(){
   image img = (image) malloc(sizeof(bloc_image));
   img->toutnoir = true;
@@ -48,6 +54,9 @@ image construit_noir(){
   return img;
 }
 
+/***********************/
+/*  construit_composee */
+/***********************/
 image construit_composee(image i1, image i2, image i3, image i4){
   image img = (image) malloc(sizeof(bloc_image));
   img->toutnoir = false;
@@ -59,6 +68,9 @@ image construit_composee(image i1, image i2, image i3, image i4){
 
 /*------------------ Affichages d'images -------------------------------*/
 
+/*********************/
+/*  affichage normal */
+/*********************/
 void affiche_simple(image img){
   void Aux(image img){
     if (img == NULL) printf("B");
@@ -77,6 +89,9 @@ void affiche_simple(image img){
   printf("\n");
 }
 
+/*************************/
+/*  affichage profondeur */
+/*************************/
 void affiche_profondeur(image img){
   void Aux(image img, int p){
     if (img == NULL) printf("B%d", p);
@@ -97,6 +112,9 @@ void affiche_profondeur(image img){
 
 /*--------------------------------------------------------------*/
 
+/*************************/
+/*      est_blanche      */
+/*************************/
 bool est_blanche(image img){
   if (img == NULL) return true;
   else{
@@ -108,6 +126,9 @@ bool est_blanche(image img){
   }
 }
 
+/*************************/
+/*       est_noire       */
+/*************************/
 bool est_noire(image img){
   if (img == NULL) return false;
   else{
@@ -119,45 +140,48 @@ bool est_noire(image img){
   }
 }
 
+/*************************/
+/*         copie         */
+/*************************/
 image Copie(image img){
-	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(), 
+	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(),
 						   construit_blanc(),construit_blanc());
 	else if (img->toutnoir) return construit_composee(construit_noir(),construit_noir(),
-							  construit_noir(),construit_noir());
+								  construit_noir(),construit_noir());
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
+/*************************/
+/*      meme_dessin      */
+/*************************/
 bool meme_dessin(image i1, image i2){
   if(! (i1 == NULL)){
-    if (i1->toutnoir) return est_noire(i2); //On teste si les deux images sont noires
+    if (i1->toutnoir) return est_noire(i2);
     else return (meme_dessin(i1->fils[0],i2->fils[0]) &&
                 meme_dessin(i1->fils[1],i2->fils[1]) &&
-      		meme_dessin(i1->fils[2],i2->fils[2]) &&
-                meme_dessin(i1->fils[3],i2->fils[3])); //Appel récursif sur les fils
+      		 			meme_dessin(i1->fils[2],i2->fils[2]) &&
+                meme_dessin(i1->fils[3],i2->fils[3]));
   } else {
-    return est_blanche(i2); //On teste si les deux images sont blanches
+    return est_blanche(i2);
   }
 }
 
+/*************************/
+/*       Difference      */
+/*************************/
+/* Pas encore définitive */
 image Difference(image i1, image i2){
 	image res;
-	
-	//Cas où les images sont de meme couleurs :
-	if(est_noire(i1) && est_noire(i2)) 
+	if(est_noire(i1) && est_noire(i2))
 		res = construit_blanc();
 	else if (est_blanche(i1) && est_blanche(i2))
 		res = construit_blanc();
-	
-	//Cas où les images sont de couleurs différentes
 	else if(est_blanche(i1) && est_noire(i2))
 		res = construit_noir();
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
-	
-	//Cas où les images n'ont pas la meme profondeur
- 	 else if(i1==NULL && !(i2==NULL)) res = construit_noir();
-  	else if (!(i1==NULL) && i2==NULL) res = construit_noir();
-	
+  else if(i1==NULL && !(i2==NULL)) res = construit_noir();
+  else if (!(i1==NULL) && i2==NULL) res = construit_noir();
 	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
@@ -165,6 +189,10 @@ image Difference(image i1, image i2){
 	return res;
 }
 
+/*************************/
+/*      rendmemoire      */
+/*************************/
+/* Pas encore définitive (ne fonctionne pas) */
 void rendmemoire(image *img){
   if (! ((*img) == NULL) ){
     printf("Image non nulle\n");
@@ -176,10 +204,13 @@ void rendmemoire(image *img){
       }
     }
     printf("fin de l'itération\n");
+    free(img);
   }
-  free(img);
 }
 
+/*************************/
+/*        lecture        */
+/*************************/
 image lecture(){
   image Aux(){
     char c;
@@ -199,20 +230,22 @@ image lecture(){
   return Aux();
 }
 
+/*************************/
+/*        négatif        */
+/*************************/
 void Negatif(image *img){
-	
-	if(est_noire(*img)) *img = construit_blanc(); //Inverse en blanc
-	else if(est_blanche(*img)) *img = construit_noir(); //Inverse en noir
+	if(est_noire(*img)) *img = construit_blanc();
+	else if(est_blanche(*img)) *img = construit_noir();
 	else{
 		for (int i = 0; i < 4; ++i)
-			Negatif(&((*img)->fils[i])); //Appel récursif sur les fils
+			Negatif(&((*img)->fils[i]));
 	}
 }
 
 /*************************************************/
 /*                Créations d'images             */
 /*            pour tester les fonctions et       */
-/*                   procédures                  */
+/*             procédures (~ 150 lignes)         */
 /*************************************************/
 
 void nv_carre(image *img){
@@ -406,6 +439,7 @@ void main(int argc, char const *argv[]) {
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
+  /* ne fonctionne pas. */
   //rendmemoire(&pif);
 
   printf("\nTest Copie : \n");
@@ -416,7 +450,7 @@ void main(int argc, char const *argv[]) {
   printf("Carre et carre : ");
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
-  printf("Carre et damier : ");
+  printf("Carre et damnier : ");
   if (meme_dessin(carre,damier)) printf("Vrai\n");
   else printf("Faux\n");
   printf("pif noire et pif blanche : ");
@@ -426,11 +460,12 @@ void main(int argc, char const *argv[]) {
   if (meme_dessin(pif_noire, pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
+  /* Résultats pas toujours convaincants*/
   printf("\nDifference : ");
   affiche_simple(Difference(carre,damier));
   affiche_simple(Difference(carre,carre2));
   affiche_simple(Difference(carre, carre));
-  affiche_simple(Difference(pif, construit_noir())); //resultat chelou
+  affiche_simple(Difference(pif, construit_noir()));
   affiche_simple(Difference(pif_noire, construit_noir()));
   affiche_simple(Difference(pif_noire, pif_blanche));
 
