@@ -130,16 +130,19 @@ image Copie(image img){
 
 void rendmemoire(image *img){
   if (! (*img == NULL) ){
-    //free(&(*img)->toutnoir);
-    for (int i = 0; i < 4; ++i){
-      rendmemoire(&((*img)->fils[i]));
+
+    if ((*img)->toutnoir == true){
+      for (int i = 0; i < 4; ++i){
+        rendmemoire(&((*img)->fils[i]));
+      }
     }
+    //free(&(*img)->toutnoir);
     free(img);
   }
 }
 
 
-/*image Difference(image i1, image i2){
+image Difference(image i1, image i2){
 	image res;
 
 	if(est_noire(i1) && est_noire(i2))
@@ -150,15 +153,15 @@ void rendmemoire(image *img){
 		res = construit_noir();
 	else if (est_noire(i1) && est_blanche(i2))
 		res = construit_noir();
-	else if(i1==NULL && !(i2==NULL)) res = construit_noir();
-	else if (!(i1==NULL) && i2==NULL) res = construit_noir();
+	//else if(i1==NULL && !(i2==NULL)) res = construit_noir();
+	//else if (!(i1==NULL) && i2==NULL) res = construit_noir();
 	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
 
 	}
 	return res;
-}*/
+}
 
 void Negatif(image *img){
 	if(est_noire(*img)) *img = construit_blanc();
@@ -184,6 +187,35 @@ void nv_carre(image *img){
                                   construit_blanc(), construit_blanc()),
                 construit_composee(construit_noir(), construit_blanc(),
                               construit_blanc(), construit_blanc()));
+}
+
+void nv_carre2(image *img){
+  *img = construit_composee(
+    construit_composee(
+      construit_blanc(),
+      construit_blanc(),
+      construit_blanc(),
+      construit_noir()
+    ),
+    construit_composee(
+      construit_noir(),
+      construit_blanc(),
+      construit_blanc(),
+      construit_blanc()
+    ),
+    construit_composee(
+      construit_blanc(),
+      construit_noir(),
+      construit_blanc(),
+      construit_blanc()
+    ),
+    construit_composee(
+      construit_noir(),
+      construit_blanc(),
+      construit_blanc(),
+      construit_blanc()
+    )
+  );
 }
 
 void nv_damnier(image *img){
@@ -285,6 +317,8 @@ void main(int argc, char const *argv[]) {
   nv_damnier(&damnier);
   image carre;
   nv_carre(&carre);
+  image carre2;
+  nv_carre2(&carre2);
   image pif;
   nv_pif(&pif);
   image pif_blanche;
@@ -319,8 +353,9 @@ void main(int argc, char const *argv[]) {
   affiche_simple(pif);
   affiche_simple(Copie(pif));
 
-  //printf("\nDifference : ");
-  //affiche_simple(Difference(carre,carre));
+  printf("\nDifference : ");
+  affiche_simple(Difference(carre,carre2));
+  affiche_simple(Difference(pif_noire, pif_blanche));
 
   printf("Negatif avant : ");
   affiche_simple(carre);
