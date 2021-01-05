@@ -127,6 +127,36 @@ image Copie(image img){
 	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
 }
 
+bool meme_dessin(image i1, image i2){
+  if(! (i1 == NULL)){
+    if (i1->toutnoir) return est_noire(i2);
+    else return (meme_dessin(i1->fils[0],i2->fils[0]) &&
+                meme_dessin(i1->fils[1],i2->fils[1]) &&
+      		 			meme_dessin(i1->fils[2],i2->fils[2]) &&
+                meme_dessin(i1->fils[3],i2->fils[3]));
+  } else {
+    return est_blanche(i2);
+  }
+}
+
+image Difference(image i1, image i2){
+	image res;
+	if(est_noire(i1) && est_noire(i2))
+		res = construit_blanc();
+	else if (est_blanche(i1) && est_blanche(i2))
+		res = construit_blanc();
+	else if(est_blanche(i1) && est_noire(i2))
+		res = construit_noir();
+	else if (est_noire(i1) && est_blanche(i2))
+		res = construit_noir();
+  else if(i1==NULL && !(i2==NULL)) res = construit_noir();
+  else if (!(i1==NULL) && i2==NULL) res = construit_noir();
+	else{
+		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
+		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
+	}
+	return res;
+}
 
 void rendmemoire(image *img){
   if (! (*img == NULL) ){
@@ -139,28 +169,6 @@ void rendmemoire(image *img){
     //free(&(*img)->toutnoir);
     free(img);
   }
-}
-
-
-image Difference(image i1, image i2){
-	image res;
-
-	if(est_noire(i1) && est_noire(i2))
-		res = construit_blanc();
-	else if (est_blanche(i1) && est_blanche(i2))
-		res = construit_blanc();
-	else if(est_blanche(i1) && est_noire(i2))
-		res = construit_noir();
-	else if (est_noire(i1) && est_blanche(i2))
-		res = construit_noir();
-	//else if(i1==NULL && !(i2==NULL)) res = construit_noir();
-	//else if (!(i1==NULL) && i2==NULL) res = construit_noir();
-	else{
-		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
-		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
-
-	}
-	return res;
 }
 
 void Negatif(image *img){
@@ -353,8 +361,22 @@ void main(int argc, char const *argv[]) {
   affiche_simple(pif);
   affiche_simple(Copie(pif));
 
+  printf("\nTest Meme dessin : \n");
+  printf("Carre et carre : ");
+  if (meme_dessin(carre,carre)) printf("Vrai\n");
+  else printf("Faux\n");
+  printf("Carre et damnier : ");
+  if (meme_dessin(carre,damnier)) printf("Vrai\n");
+  else printf("Faux\n");
+  printf("pif noire et pif blanche : ");
+  if (meme_dessin(pif_noire, pif_blanche)) printf("Vrai\n");
+  else printf("Faux\n");
+  printf("pif noire et pif noire : ");
+  if (meme_dessin(pif_noire, pif_noire)) printf("Vrai\n");
+  else printf("Faux\n");
+
   printf("\nDifference : ");
-  affiche_simple(Difference(carre,carre2));
+  affiche_simple(Difference(carre,damnier));
   affiche_simple(Difference(pif_noire, pif_blanche));
 
   printf("Negatif avant : ");
