@@ -267,9 +267,9 @@ void EliminePositionsPaires (Liste *l){
     if (! estVide(*l)){
       if (i%2 == 0){ //On vérifie que la place de l'élement dans la liste est paire
         depile(l); // pour ensuite l'enlever
-        Aux(l, 1);
+        Aux(l, 1); 
       } else {
-        Aux(&((**l).suivant), 0); //sinon l'élément reste dans la liste
+        Aux(&((**l).suivant), 0); //l'élément reste dans la liste, appel récursif sur le suivant
       }
      }
   }
