@@ -265,11 +265,11 @@ List Permutation(int n){
 void EliminePositionsPaires (Liste *l){
   void Aux(Liste *l, int i){
     if (! estVide(*l)){
-      if (i%2 == 0){
-        depile(l);
+      if (i%2 == 0){ //On vérifie que la place de l'élement dans la liste est paire
+        depile(l); // pour ensuite l'enlever
         Aux(l, 1);
       } else {
-        Aux(&((**l).suivant), 0);
+        Aux(&((**l).suivant), 0); //sinon l'élément reste dans la liste
       }
      }
   }
@@ -278,11 +278,11 @@ void EliminePositionsPaires (Liste *l){
 
 void Begaye(Liste *L){
   if (! estVide(*L)){
-    if (premier(*L) > 0){
+    if (premier(*L) > 0){ 
       Begaye(&((**L).suivant));
-      empile(premier(*L), L);
+      empile(premier(*L), L); //l'élément est dédoublé s'il est strictement positif
     }else{
-      depile(L);
+      depile(L); //L'élément est éliminé de la liste s'il est négatif
       Begaye(L);
     }
   }
@@ -310,15 +310,15 @@ int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction (d
 		if(estVide(l)) return max;
 		else{
 			if(premier(l) == 0) {
-        count = count + 1;
-				if(count > max) max = count;
-				Aux(suite(l), count, max);
+        			count = count + 1;
+				if(count > max) max = count; //max prend le plus grand nombre de zero consécutif trouvé
+				Aux(suite(l), count, max); //appel récursif
 			}else{
 				Aux(suite(l), 0, max);
 			}
 		}
 	}
-	Aux (l,0,0);
+	Aux (l,0,0); //count et max sont initialisées à 0
 }
 
 int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arg en out (troisieme version)
@@ -328,17 +328,16 @@ int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction av
 		*max = 0;
 		*count = 0;
 		if(!estVide(l)) {
-			Aux(suite(l),count,max);
+			Aux(suite(l),count,max); //On parcourt d'abord la liste jusqu'à la fin 
 			if(premier(l) == 0) {
-				*count += 1;
-
+				*count += 1; //Compte le nombre de zéro à la suite
 			}else{
 				*count = 0;
 			}
-      if(*count > *max) *max = *count;
+      			if(*count > *max) *max = *count;  //max prend le plus grand nombre de zero consécutif trouvé
 		}
 	}
-	Aux (l, &count, &max);
+	Aux (l, &count, &max); //count et max sont deux arguments en out
 	return max;
 }
 
