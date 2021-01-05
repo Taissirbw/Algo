@@ -37,6 +37,25 @@ double puissance(double x, int n){
   }
 }
 
+/* Premiere version de la fonction d'Ackermann avec de l'itératif et du récursif */
+int Ackermann(int m, int n){ 
+  int res;
+  if (m==0) return n+1;
+  else{
+      res = 1;
+      for (int i = 0; i < n+1; ++i)
+            res = Ackermann(m-1,res);
+      return res; 
+  }
+}
+
+/* Deuxièle version de la fonction d'Ackermann purement récursif */
+int Ackermann_rec(int m, int n){ 
+  if (m== 0) return n+1;
+  else if (n == 0) return Ackermann(m-1,1);
+  else return Ackermann(m-1, Ackermann(m,n-1));
+}
+
 
 void main(int argc, char const *argv[]) {
 
@@ -48,5 +67,8 @@ void main(int argc, char const *argv[]) {
   printf("(1 + 10^%d)^10^%d : %f\n", -i, i,
         puissance((1 + 1/puissance(10, i)), puissance(10, i))) ;
   }
+  
+  printf("Ackermann de 1 et 14 : %d\n", Ackermann(1, 14)); 
+  printf("Ackermann recursif de 1 et 14 : %d\n", Ackermann(1, 14));
   //return 0;
 }
