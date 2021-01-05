@@ -244,9 +244,9 @@ void nv_carre2(image *img){
       construit_noir()
     ),
     construit_composee(
+      construit_blanc(),
+      construit_blanc(),
       construit_noir(),
-      construit_blanc(),
-      construit_blanc(),
       construit_blanc()
     ),
     construit_composee(
@@ -262,6 +262,7 @@ void nv_carre2(image *img){
       construit_blanc()
     )
   );
+  Negatif(img);
 }
 
 void nv_damier(image *img){
@@ -408,7 +409,7 @@ void main(int argc, char const *argv[]) {
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
   printf("Carre et damnier : ");
-  if (meme_dessin(carre,damnier)) printf("Vrai\n");
+  if (meme_dessin(carre,damier)) printf("Vrai\n");
   else printf("Faux\n");
   printf("pif noire et pif blanche : ");
   if (meme_dessin(pif_noire, pif_blanche)) printf("Vrai\n");
@@ -418,7 +419,10 @@ void main(int argc, char const *argv[]) {
   else printf("Faux\n");
 
   printf("\nDifference : ");
-  affiche_simple(Difference(carre,damnier));
+  affiche_simple(Difference(carre,damier));
+  affiche_simple(Difference(carre,carre2));
+  affiche_simple(Difference(carre, carre));
+  affiche_simple(Difference(pif, construit_noir())); //resultat chelou
   affiche_simple(Difference(pif_noire, construit_noir()));
   affiche_simple(Difference(pif_noire, pif_blanche));
 
