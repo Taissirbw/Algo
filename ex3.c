@@ -183,8 +183,8 @@ image lecture(){
       return construit_composee(i1, i2, i3, i4);
     } else if (c == 'N') return construit_noir();
     else if (c == 'B') return construit_blanc();
-    else printf("Entrée invalide, fin de la lecture clavier");
-    return NULL;
+    else printf("Entrée invalide, fin de la lecture clavier\n");
+    exit(1);
   }
   printf("Lecture Clavier : entrez une image valide à l'aide des caractères '.', 'N' ou 'B' \n");
   return Aux();
