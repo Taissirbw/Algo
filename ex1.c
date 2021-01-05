@@ -10,7 +10,7 @@
 typedef enum { false, true } bool;
 
 
-/* Fonction récursive terminale calculant la valeur de n!,
+/* Fonction récursive calculant la valeur de n!,
 pour n supérieur ou égal à 0.
 L'accumulateur acc doit être initialisé à 1 lors de l'appel de la fonction. */
 double factorielle(double n, double acc){
@@ -29,7 +29,7 @@ double calc_e(double k){
   return aux(k,1);
 }
 
-/* Fonction récursive terminale élevant x à la puissance n
+/* Fonction récursive élevant x à la puissance n
 (n étant un entier positif ou null).*/
 double puissance(double x, int n){
   if (n == 0) return 1;
