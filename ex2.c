@@ -31,6 +31,19 @@ typedef Bloc *Liste ;
 
 /*************************************************/
 /*                                               */
+/*      definition type liste de liste           */
+/*                                               */
+/*************************************************/
+
+typedef struct ListeDe {
+  Liste tete;
+  struct ListeDe *suivante;
+} ListeDe;
+
+typedef ListeDe *ListeDeListe;
+
+/*************************************************/
+/*                                               */
 /*                predeclarations                */
 /*                                               */
 /*************************************************/
@@ -69,6 +82,15 @@ int longueur_iter (Liste l);
 void VD (Liste *L);
 void VireDernier_rec (Liste *L);
 void VireDernier_iter (Liste *L);
+
+/*---------Prédéclaration fonctions et procédures Listes de Listes-----------*/
+
+void initVideDe(ListeDeListe *LL);
+bool estVideDe(ListeDeListe ll);
+Liste premierDe(ListeDeListe ll);
+ListeDeListe ajouteDe(Liste l, ListeDeListe ll);
+ListeDeListe suiteDe(ListeDeListe ll);
+
 
 
 /*************************************************/
@@ -118,6 +140,50 @@ void depile(Liste *L)
     *L = suite(*L) ;
     free(tmp) ;
 }
+
+/*************************************************/
+/*                                               */
+/*          briques de base ListeDe              */
+/*                                               */
+/*************************************************/
+
+void initVideDe(ListeDeListe *LL){
+  *LL = NULL;
+}
+
+bool estVideDe(ListeDeListe ll){
+  return ll == NULL;
+}
+
+Liste premierDe(ListeDeListe ll){
+  return ll->tete;
+}
+ListeDeListe ajouteDe(Liste l, ListeDeListe ll){
+  ListeDeListe tmp = (ListeDeListe) malloc(sizeof(Liste)) ;
+  tmp->tete = l ;
+  tmp->suivante = ll ;
+  return tmp;
+}
+
+ListeDeListe suiteDe(ListeDeListe ll){
+  return ll->suivante;
+}
+
+void afficheDe(ListeDeListe ll)
+{
+    void Aux(ListeDeListe ll, int i){
+      if(estVideDe(ll))
+          printf("\n");
+      else
+      {
+          printf("%d >> ", i);
+          affiche_rec(premierDe(ll));
+          Aux(suiteDe(ll), i + 1);
+      }
+    }
+    Aux(ll, 1);
+}
+
 
 /*************************************************/
 /*                                               */
@@ -229,20 +295,28 @@ void VideListe(Liste *L)
 /*                                               */
 /*************************************************/
 
+/****************************/
+/*    DebutDeuxIdentiques   */
+/****************************/
 bool DebutDeuxIdentiques (Liste l){
   if (estVide(l)) return FALSE;
   else if (estVide(suite(l))) return FALSE;
   else return premier(l) == premier(suite(l));
 }
 
+/****************************/
+/*        QueDesZeros       */
+/****************************/
 bool QueDesZeros (Liste l){
 	if (estVide(l)) return TRUE;
 	else if (premier(l) == 0) QueDesZeros(suite(l));
 		else return FALSE;
 }
 
-
-bool SousEnsemble (Liste l1, Liste l2){ //Fonction très très trèès moche
+/****************************/
+/*       SousEnsemble       */
+/****************************/
+bool SousEnsemble (Liste l1, Liste l2){
 	if (longueur_rec(l1) > longueur_rec(l2)) return FALSE;
 	else if (estVide(l1)) return TRUE;
 	else if (estVide(l2)) return FALSE;
@@ -252,43 +326,86 @@ bool SousEnsemble (Liste l1, Liste l2){ //Fonction très très trèès moche
 
 }
 
-/*
-List Permutation(int n){
-  List ATPTL(int n, List LL){
-    if (LL == NULL) return [];
-  }
-  if n = 0 return [[]];
-  else return ATPTL(n, Permutation(n-1));
+/****************************/
+/*        Permutations      */
+/****************************/
+ListeDeListe AETTL(int x, ListeDeListe ll){
+  if (estVideDe(ll)) return ll;
+  else
+    return ajouteDe(ajoute(x, premierDe(ll)), AETTL(x, suiteDe(ll)));
 }
-*/
 
+ListeDeListe ATP(int n, Liste l){
+  if (estVide(l)){
+    ListeDeListe ll;
+    initVideDe(&ll);
+    return ajouteDe(ajoute(n, l), ll);
+  } else return ajouteDe(ajoute(n, l), AETTL(premier(l), ATP(n, suite(l))));
+}
+
+ListeDeListe concatene(ListeDeListe ll1, ListeDeListe ll2){
+  if (estVideDe(ll1)) return ll2;
+  else return ajouteDe(premierDe(ll1), concatene(suiteDe(ll1), ll2));
+}
+
+ListeDeListe ATPTL(int n, ListeDeListe ll){
+  if (estVideDe(ll)) return ll;
+  else return concatene(ATP(n, premierDe(ll)), ATPTL(n, suiteDe(ll)));
+}
+
+ListeDeListe permutation(int n){
+  if (n==0){
+    ListeDeListe ll;
+    initVideDe(&ll);
+    Liste l;
+    initVide(&l);
+    ll = ajouteDe(l, ll);
+    return ll;
+  } else{
+    return ATPTL(n, permutation(n-1));
+  }
+}
+
+/****************************/
+/*  EliminePositionsPaires  */
+/****************************/
 void EliminePositionsPaires (Liste *l){
   void Aux(Liste *l, int i){
     if (! estVide(*l)){
-      if (i%2 == 0){ //On vérifie que la place de l'élement dans la liste est paire
-        depile(l); // pour ensuite l'enlever
-        Aux(l, 1); 
+      if (i%2 == 0){
+        depile(l);
+        Aux(l, 1);
       } else {
-        Aux(&((**l).suivant), 0); //l'élément reste dans la liste, appel récursif sur le suivant
+        Aux(&((**l).suivant), 0);
       }
      }
   }
   Aux(l, 1);
 }
 
+/****************************/
+/*          Begaye          */
+/****************************/
 void Begaye(Liste *L){
   if (! estVide(*L)){
-    if (premier(*L) > 0){ 
+    if (premier(*L) > 0){
       Begaye(&((**L).suivant));
-      empile(premier(*L), L); //l'élément est dédoublé s'il est strictement positif
+      empile(premier(*L), L);
     }else{
-      depile(L); //L'élément est éliminé de la liste s'il est négatif
+      depile(L);
       Begaye(L);
     }
   }
 }
 
-int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
+
+/****************************/
+/*    MaxZerosConsecutifs   */
+/****************************/
+/*--------Première version--------*/
+/*        Version itérative       */
+/*--------------------------------*/
+int MaxZerosConsecutifs_ite(Liste l){
 	int count = 0;
 	int max = 0;
 	if (estVide(l)) return count;
@@ -304,43 +421,55 @@ int MaxZerosConsecutifs_ite(Liste l){ //Version itérative
 	return max;
 }
 
-
-int MaxZerosConsecutifs_rec(Liste l){ //Version récursive avec sous fonction (deuxieme version)
+/*-----------------Deuxième Version-----------------*/
+/*                 Version récursive                */
+/*    Avec sous fonction et deux arguments en in.   */
+/*--------------------------------------------------*/
+int MaxZerosConsecutifs_rec(Liste l){
 	int Aux (Liste l, int count, int max){
 		if(estVide(l)) return max;
 		else{
 			if(premier(l) == 0) {
-        			count = count + 1;
-				if(count > max) max = count; //max prend le plus grand nombre de zero consécutif trouvé
-				Aux(suite(l), count, max); //appel récursif
+        count = count + 1;
+				if(count > max) max = count;
+				Aux(suite(l), count, max);
 			}else{
 				Aux(suite(l), 0, max);
 			}
 		}
 	}
-	Aux (l,0,0); //count et max sont initialisées à 0
+	Aux (l,0,0);
 }
 
-int MaxZerosConsecutifs_out(Liste l){ //Version récursive avec sous fonction avec 2 arg en out (troisieme version)
+/*----------------Troisième Version-----------------*/
+/*                 Version récursive                */
+/*    Avec sous fonction et deux arguments en out.  */
+/*--------------------------------------------------*/
+int MaxZerosConsecutifs_out(Liste l){
 	int max;
 	int count;
 	void Aux (Liste l, int *count, int *max){
 		*max = 0;
 		*count = 0;
 		if(!estVide(l)) {
-			Aux(suite(l),count,max); //On parcourt d'abord la liste jusqu'à la fin 
+			Aux(suite(l),count,max);
 			if(premier(l) == 0) {
-				*count += 1; //Compte le nombre de zéro à la suite
+				*count += 1;
+
 			}else{
 				*count = 0;
 			}
-      			if(*count > *max) *max = *count;  //max prend le plus grand nombre de zero consécutif trouvé
+      if(*count > *max) *max = *count;
 		}
 	}
-	Aux (l, &count, &max); //count et max sont deux arguments en out
+	Aux (l, &count, &max);
 	return max;
 }
 
+
+/****************************/
+/*       EstPalindrome      */
+/****************************/
 bool EstPalindrome(Liste l){
   Liste p;
   initVide(&p);
@@ -359,6 +488,9 @@ bool EstPalindrome(Liste l){
   return res;
 }
 
+/****************************/
+/*      SommeAvantApres     */
+/****************************/
 bool SommeAvantApres(Liste l){
   int apres;
   bool res;
@@ -541,6 +673,87 @@ void Test_SommeAvantApres(Liste l){
 
 }
 
+/* Fonction de test trop longue, elle sera divisée en plusieur partie plus tard.
+Pour l'instant, pour plus de visibilité il vaut mieux commenter les autre test
+lorsqu'on fait appel à cette fonction.*/
+void Test_ListeDeListes(){
+
+  printf("\nTests de la structure ListeDeListe \n" );
+  ListeDeListe ll;
+  initVideDe(&ll);
+  printf("InitVideDe : ll est vide ? " );
+  if (estVideDe(ll)) printf ("Vrai\n");
+  else printf("Faux\n");
+
+  Liste l ;
+  initVide(&l);
+  ll = ajouteDe(l, ll);
+  printf("Ajoute une liste vide : ll est vide ? " );
+  if (estVideDe(ll)) printf ("Vrai\n");
+  else printf("Faux\n");
+  empile(7, &l) ;
+  empile(-2, &l) ;
+  empile(4, &l) ;
+  empile(1, &l) ;
+  empile(3, &l) ;
+  empile(2, &l) ;
+  ll = ajouteDe(l, ll);
+  empile(-8, &l) ;
+  empile(3, &l) ;
+  empile(2, &l) ;
+  ll = ajouteDe(l, ll);
+  printf("AjouteDe : ll est vide après ajout de l ? " );
+  if (estVideDe(ll)) printf ("Vrai\n");
+  else printf("Faux\n");
+
+  printf("Affichage Liste de Liste : \n");
+  afficheDe(ll);
+
+  printf("PremierDe : Premier de ll : \n");
+  affiche_rec(premierDe(ll));
+
+  printf("AETTL : ajoute 45 en tête de chaque liste de ll : \n");
+  afficheDe(AETTL(45, ll));
+
+  printf("ATP : Liste de l avec 0 ajouté à toutes les positions : \n");
+  afficheDe(ATP(0, l));
+
+  ListeDeListe mm;
+  initVideDe(&mm);
+
+  Liste m ;
+  initVide(&m);
+  empile(-8, &m) ;
+  empile(3, &m) ;
+  empile(2, &m) ;
+  mm = ajouteDe(m, mm);
+  VideListe(&m);
+  empile(143, &m) ;
+  empile(3, &m) ;
+  empile(48, &m) ;
+  empile(12, &m) ;
+  empile(67, &m) ;
+  empile(0, &m) ;
+  mm = ajouteDe(m, mm);
+  printf("Liste de Liste mm :\n");
+  afficheDe(mm);
+
+  printf("Concatene : Concatène les listes de listes ll et mm: \n");
+  afficheDe(concatene(ll, mm));
+
+  printf("ATPTL : ajoute 3 à toutes les positions de toutes les listes de mm\n");
+  afficheDe(ATPTL(3, mm));
+
+  printf("Permutations : \n");
+  afficheDe(permutation(3)); //segfaukt à partir de 9.
+
+  ll = suiteDe(ll);
+  printf("SuiteDe : ll est vide après retrait de l ? " );
+  if (estVideDe(ll)) printf ("Vrai\n");
+  else printf("Faux\n");
+
+}
+
 
 /*************************************************/
 /*                                               */
@@ -549,7 +762,9 @@ void Test_SommeAvantApres(Liste l){
 /*************************************************/
 int main(int argc, char** argv){
 
+
 /**--------------------TEST DES FONCTIONS ET PROCEDURES--------------------**/
+
     Liste l ;
     initVide(&l) ;
     Liste m;
@@ -561,6 +776,10 @@ int main(int argc, char** argv){
 
     Test_SousEnsemble(l,m);
 
+    /*Pour l'instant, pour plus de visibilité il vaut mieux commenter
+    les autre test lorsqu'on fait appel à Test_ListeDeListes.*/
+    //Test_ListeDeListes();
+
     Test_EliminePositionsPaires(l);
 
     Test_Begaye(l);
@@ -571,17 +790,6 @@ int main(int argc, char** argv){
 
     Test_SommeAvantApres(l);
 
+
     return 0;
 }
-
-/*
-void poup (Liste l)
-{
-        printf("Double Affichage \n") ;
-        affiche_rec(l) ;
-        affiche_iter(l) ;
-        printf("Longueur en double %d %d \n\n",
-                           longueur_rec(l),
-                           longueur_iter(l)
-               ) ;
-}*/
