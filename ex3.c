@@ -159,16 +159,18 @@ image Difference(image i1, image i2){
 }
 
 void rendmemoire(image *img){
-  if (! (*img == NULL) ){
-
-    if ((*img)->toutnoir == true){
+  if (! ((*img) == NULL) ){
+    printf("Image non nulle\n");
+    if (! (*img)->toutnoir == true){
+      printf("Image non toute noire\n");
       for (int i = 0; i < 4; ++i){
+        printf("rendmemoire fils %d\n", i);
         rendmemoire(&((*img)->fils[i]));
       }
     }
-    //free(&(*img)->toutnoir);
-    free(img);
+    printf("fin de l'itération\n");
   }
+  free(img);
 }
 
 image lecture(){
@@ -206,14 +208,31 @@ void Negatif(image *img){
 /*************************************************/
 
 void nv_carre(image *img){
-  *img = construit_composee(construit_composee(construit_blanc(),
-                  construit_blanc(), construit_blanc(), construit_noir()),
-                construit_composee(construit_blanc(), construit_blanc(),
-                                  construit_noir(), construit_blanc()),
-                construit_composee(construit_blanc(), construit_noir(),
-                                  construit_blanc(), construit_blanc()),
-                construit_composee(construit_noir(), construit_blanc(),
-                              construit_blanc(), construit_blanc()));
+  *img = construit_composee(
+    construit_composee(
+      construit_blanc(),
+      construit_blanc(),
+      construit_blanc(),
+      construit_noir()
+    ),
+    construit_composee(
+      construit_blanc(),
+      construit_blanc(),
+      construit_noir(),
+      construit_blanc()
+    ),
+    construit_composee(
+      construit_blanc(),
+      construit_noir(),
+      construit_blanc(),
+      construit_blanc()
+    ),
+    construit_composee(
+      construit_noir(),
+      construit_blanc(),
+      construit_blanc(),
+      construit_blanc())
+    );
 }
 
 void nv_carre2(image *img){
@@ -245,9 +264,13 @@ void nv_carre2(image *img){
   );
 }
 
-void nv_damnier(image *img){
-  *img = construit_composee(construit_noir(), construit_blanc(),
-                construit_noir(), construit_blanc());
+void nv_damier(image *img){
+  *img = construit_composee(
+    construit_noir(),
+    construit_blanc(),
+    construit_noir(),
+    construit_blanc()
+  );
 }
 
 void nv_pif(image *img){
@@ -340,8 +363,8 @@ void nv_pif_noire(image *img){
 /*                                               */
 /*************************************************/
 void main(int argc, char const *argv[]) {
-  image damnier;
-  nv_damnier(&damnier);
+  image damier;
+  nv_damier(&damier);
   image carre;
   nv_carre(&carre);
   image carre2;
@@ -354,8 +377,8 @@ void main(int argc, char const *argv[]) {
   nv_pif_noire(&pif_noire);
 
 
-  printf("Damnier : ");
-  affiche_simple(damnier);
+  printf("Damier : ");
+  affiche_simple(damier);
 
   printf("Carré noir : ");
   affiche_simple(carre);
@@ -396,6 +419,7 @@ void main(int argc, char const *argv[]) {
 
   printf("\nDifference : ");
   affiche_simple(Difference(carre,damnier));
+  affiche_simple(Difference(pif_noire, construit_noir()));
   affiche_simple(Difference(pif_noire, pif_blanche));
 
   printf("Test Lecture Clavier : \n");
