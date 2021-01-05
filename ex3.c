@@ -171,6 +171,25 @@ void rendmemoire(image *img){
   }
 }
 
+image lecture(){
+  image Aux(){
+    char c;
+    scanf(" %c", &c);
+    if(c == '.'){
+      image i1 = Aux();
+      image i2 = Aux();
+      image i3 = Aux();
+      image i4 = Aux();
+      return construit_composee(i1, i2, i3, i4);
+    } else if (c == 'N') return construit_noir();
+    else if (c == 'B') return construit_blanc();
+    else printf("Entrée invalide, fin de la lecture clavier");
+    return NULL;
+  }
+  printf("Lecture Clavier : entrez une image valide à l'aide des caractères '.', 'N' ou 'B' \n");
+  return Aux();
+}
+
 void Negatif(image *img){
 	if(est_noire(*img)) *img = construit_blanc();
 	else if(est_blanche(*img)) *img = construit_noir();
@@ -378,6 +397,12 @@ void main(int argc, char const *argv[]) {
   printf("\nDifference : ");
   affiche_simple(Difference(carre,damnier));
   affiche_simple(Difference(pif_noire, pif_blanche));
+
+  printf("Test Lecture Clavier : \n");
+  image lue = lecture();
+  printf("Voici l'image lue : \n");
+  affiche_simple(lue);
+  affiche_profondeur(lue);
 
   printf("Negatif avant : ");
   affiche_simple(carre);
