@@ -20,10 +20,13 @@ double factorielle(double n, double acc){
 
 /* Fonction récursive terminale calculant une approximation de e.
 (k étant le nombre d'itérations du calcul).
-L'accumulateur acc doit être initialisé à 1 lors de l'appel de fonction. */
-double calc_e(double k, double acc){
-  if (k == 0) return acc;
-  else return calc_e(k - 1, acc + 1/(factorielle(k, 1)));
+L'accumulateur acc doit être initialisé à 1 lors de l'appel de la fonction auxiliaire. */
+double calc_e(double k){
+  double aux(double k, double acc){
+    if (k == 0) return acc;
+    else return aux(k - 1, acc + 1/(factorielle(k, 1)));
+  }
+  return aux(k,1);
 }
 
 /* Fonction récursive terminale élevant x à la puissance n
@@ -60,7 +63,7 @@ int Ackermann_rec(int m, int n){
 void main(int argc, char const *argv[]) {
 
   printf("Fact : %f\n", factorielle(2, 1)); //test de la fonction factorielle
-  printf("e : %f\n", calc_e(5, 1)); //test de la fonction calc_e
+  printf("e : %f\n", calc_e(5)); //test de la fonction calc_e
   //Calcul de e avec la fonction puissance
   int k = 5;
   for (int i = 0; i < k; i++){
