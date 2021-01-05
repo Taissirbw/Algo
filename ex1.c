@@ -69,6 +69,6 @@ void main(int argc, char const *argv[]) {
   }
   
   printf("Ackermann de 1 et 14 : %d\n", Ackermann(1, 14)); 
-  printf("Ackermann recursif de 1 et 14 : %d\n", Ackermann(1, 14));
+  printf("Ackermann récursif de 1 et 14 : %d\n", Ackermann_rec(1, 14));
   //return 0;
 }
