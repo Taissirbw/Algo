@@ -1,7 +1,7 @@
 # Algo
 rise and shine sailers, it be LE TP D'ALGO
 
-- Clean up les test de Liste de Liste dans l'ex2, j'ai juste fais une grosse fonction de connard j'avoue
+A faire : Clean up les test de Liste de Liste dans l'ex2, j'ai juste fais une grosse fonction de connard j'avoue
 
 1. Quelques Calculs simples
   - Calcul de e : OK (complexités nulles)
