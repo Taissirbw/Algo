@@ -1,7 +1,7 @@
 # Algo
 rise and shine sailers, it be LE TP D'ALGO
 
-Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dans le main (pour l'exercie 3 : faire un truc mieux)
+- Clean up les test de Liste de Liste dans l'ex2, j'ai juste fais une grosse fonction de connard j'avoue
 
 1. Quelques Calculs simples
   - Calcul de e : OK (complexités nulles)
@@ -13,7 +13,7 @@ Pour le 4 : Clean up et commenter le code, peut-être ré-organiser les test dan
   - DebutDeuxIdentiques : OK
   - QueDesZeros : OK
   - SousEnsemble : OK mais tres moche
-  - Permutations : ?? Il faut créer un type Liste de liste et définir les fonctions de base pour ce dernier. Ensuite traduire le pseudo code donné par le prof
+  - Permutations : Ok enfin putain
   - EliminePositionsPaires : OK
   - Begaye : OK
   - MaxZerosConsecutif : OK
