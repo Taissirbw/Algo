@@ -31,7 +31,7 @@ A faire : Clean up les test de Liste de Liste dans l'ex2, j'ai juste fais une gr
   - meme_dessin : OK
   - difference :
   - rendmemoire : Je comprend rien sa mère mais j'y travaille
-  - lecture_clavier :
+  - lecture_clavier : OK
   - CompteSousImagesPleines :
   - arrondit :
   - négatif : Ok
