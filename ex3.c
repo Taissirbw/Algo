@@ -38,8 +38,7 @@ typedef bloc_image *image;
 /*  construit_blanc */
 /********************/
 image construit_blanc(){
-  image img = NULL;
-  return img;
+  return NULL;
 }
 
 /********************/
@@ -48,9 +47,9 @@ image construit_blanc(){
 image construit_noir(){
   image img = (image) malloc(sizeof(bloc_image));
   img->toutnoir = true;
-  for(int i=0; i<4; i++){
+  /*for(int i=0; i<4; i++){
     img->fils[i] = NULL;
-  }
+  }*/
   return img;
 }
 
@@ -75,7 +74,7 @@ void affiche_simple(image img){
   void Aux(image img){
     if (img == NULL) printf("B");
     else{
-      if (img->toutnoir == true) printf("N");
+      if (img->toutnoir) printf("N");
       else{
         printf(".");
         for(int i=0; i<4; i++){
@@ -96,7 +95,7 @@ void affiche_profondeur(image img){
   void Aux(image img, int p){
     if (img == NULL) printf("B%d", p);
     else{
-      if (img->toutnoir == true) printf("N%d", p);
+      if (img->toutnoir) printf("N%d", p);
       else{
         printf(". %d", p);
         for(int i=0; i<4; i++){
@@ -118,10 +117,12 @@ void affiche_profondeur(image img){
 bool est_blanche(image img){
   if (img == NULL) return true;
   else{
-    if (img->toutnoir == true) return false;
+    if (img->toutnoir) return false;
     else{
-      return (est_blanche(img->fils[0]) && est_blanche(img->fils[1])
-              && est_blanche(img->fils[2]) && est_blanche(img->fils[3]));
+      return (est_blanche(img->fils[0])
+              && est_blanche(img->fils[1])
+              && est_blanche(img->fils[2])
+              && est_blanche(img->fils[3]));
     }
   }
 }
@@ -132,10 +133,13 @@ bool est_blanche(image img){
 bool est_noire(image img){
   if (img == NULL) return false;
   else{
-    if (img->toutnoir == true) return true;
+    if (img->toutnoir) return true;
     else{
-      return (est_noire(img->fils[0]) && est_noire(img->fils[1])
-              && est_noire(img->fils[2]) && est_noire(img->fils[3]));
+      printf("Est noir recursion\n" );
+      return (est_noire(img->fils[0])
+              && est_noire(img->fils[1])
+              && est_noire(img->fils[2])
+              && est_noire(img->fils[3]));
     }
   }
 }
@@ -143,26 +147,28 @@ bool est_noire(image img){
 /*************************/
 /*         copie         */
 /*************************/
+
 image Copie(image img){
-	if (img == NULL) return construit_composee(construit_blanc(),construit_blanc(),
-						   construit_blanc(),construit_blanc());
-	else if (img->toutnoir) return construit_composee(construit_noir(),construit_noir(),
-								  construit_noir(),construit_noir());
-	else return construit_composee(img->fils[0],img->fils[1],img->fils[2],img->fils[3]);
+	if (img == NULL) return construit_blanc();
+	else if (img->toutnoir) return construit_noir();
+	else return construit_composee(img->fils[0],img->fils[1],
+                                img->fils[2],img->fils[3]);
 }
 
 /*************************/
 /*      meme_dessin      */
 /*************************/
 bool meme_dessin(image i1, image i2){
-  if(! (i1 == NULL)){
-    if (i1->toutnoir) return est_noire(i2);
-    else return (meme_dessin(i1->fils[0],i2->fils[0]) &&
+  if((i1 == NULL)) return est_blanche(i2);
+  else if (i1->toutnoir){
+    printf("Image toute noire, on teste juste i2\n" );
+    return est_noire(i2);
+  }
+  else {
+    return (meme_dessin(i1->fils[0],i2->fils[0]) &&
                 meme_dessin(i1->fils[1],i2->fils[1]) &&
       		 			meme_dessin(i1->fils[2],i2->fils[2]) &&
                 meme_dessin(i1->fils[3],i2->fils[3]));
-  } else {
-    return est_blanche(i2);
   }
 }
 
@@ -196,7 +202,7 @@ image Difference(image i1, image i2){
 void rendmemoire(image *img){
   if (! ((*img) == NULL) ){
     printf("Image non nulle\n");
-    if (! (*img)->toutnoir == true){
+    if (! (*img)->toutnoir){
       printf("Image non toute noire\n");
       for (int i = 0; i < 4; ++i){
         printf("rendmemoire fils %d\n", i);
@@ -215,14 +221,15 @@ image lecture(){
   image Aux(){
     char c;
     scanf(" %c", &c);
-    if(c == '.'){
+    if (c == 'B') return construit_blanc();
+    else if (c == 'N') return construit_noir();
+    else if(c == '.'){
       image i1 = Aux();
       image i2 = Aux();
       image i3 = Aux();
       image i4 = Aux();
       return construit_composee(i1, i2, i3, i4);
-    } else if (c == 'N') return construit_noir();
-    else if (c == 'B') return construit_blanc();
+    }
     else printf("Entrée invalide, fin de la lecture clavier\n");
     exit(1);
   }
@@ -436,6 +443,8 @@ void main(int argc, char const *argv[]) {
 
   affiche_simple(pif_noire);
   printf("est_noire ? ");
+  if (est_noire(lecture())) printf("Vrai\n");
+  else printf("Faux\n");
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
@@ -443,8 +452,12 @@ void main(int argc, char const *argv[]) {
   //rendmemoire(&pif);
 
   printf("\nTest Copie : \n");
-  affiche_simple(pif);
-  affiche_simple(Copie(pif));
+  //affiche_simple(pif);
+  /*image lue = lecture();
+  printf("Voici l'image lue : \n");
+  affiche_simple(lue);
+  printf("En voici sa copie : \n");
+  affiche_simple(Copie(lue));*/
 
   printf("\nTest Meme dessin : \n");
   printf("Carre et carre : ");
@@ -459,6 +472,9 @@ void main(int argc, char const *argv[]) {
   printf("pif noire et pif noire : ");
   if (meme_dessin(pif_noire, pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
+  printf("pif noire et simple noire : ");
+  if (meme_dessin(pif_noire, construit_noir())) printf("Vrai\n");
+  else printf("Faux\n");
 
   /* Résultats pas toujours convaincants*/
   printf("\nDifference : ");
@@ -469,11 +485,11 @@ void main(int argc, char const *argv[]) {
   affiche_simple(Difference(pif_noire, construit_noir()));
   affiche_simple(Difference(pif_noire, pif_blanche));
 
-  printf("Test Lecture Clavier : \n");
+  /*printf("Test Lecture Clavier : \n");
   image lue = lecture();
   printf("Voici l'image lue : \n");
   affiche_simple(lue);
-  affiche_profondeur(lue);
+  affiche_profondeur(lue);*/
 
   printf("Negatif avant : ");
   affiche_simple(carre);
