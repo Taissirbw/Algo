@@ -159,9 +159,13 @@ image Copie(image img){
 /*      meme_dessin      */
 /*************************/
 bool meme_dessin(image i1, image i2){
-  if((i1 == NULL)) return est_blanche(i2);
-  else if (i1->toutnoir){
+  if((i1 == NULL)) {
+    printf("Image toute blanche, on teste juste i2\n" );
+    return (i2 == NULL);
+    //return est_blanche(i2);
+} else if (i1->toutnoir){
     printf("Image toute noire, on teste juste i2\n" );
+    affiche_simple(i2);
     return est_noire(i2);
   }
   else {
@@ -424,6 +428,7 @@ void main(int argc, char const *argv[]) {
   nv_pif_blanche(&pif_blanche);
   image pif_noire;
   nv_pif_noire(&pif_noire);
+  image simple_noire = construit_noir();
 
 
   printf("Damier : ");
@@ -443,7 +448,7 @@ void main(int argc, char const *argv[]) {
 
   affiche_simple(pif_noire);
   printf("est_noire ? ");
-  if (est_noire(lecture())) printf("Vrai\n");
+  if (est_noire(construit_noir())) printf("Vrai\n");
   else printf("Faux\n");
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
@@ -473,7 +478,7 @@ void main(int argc, char const *argv[]) {
   if (meme_dessin(pif_noire, pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
   printf("pif noire et simple noire : ");
-  if (meme_dessin(pif_noire, construit_noir())) printf("Vrai\n");
+  if (meme_dessin(pif_noire, lecture())) printf("Vrai\n");
   else printf("Faux\n");
 
   /* Résultats pas toujours convaincants*/
