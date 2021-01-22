@@ -161,12 +161,13 @@ image Copie(image img){
 /*************************/
 bool meme_dessin(image i1, image i2){
   if((i1 == NULL)) {
-    //printf("Image toute blanche, on teste juste i2\n" );
-    return (i2 == NULL);
+    return est_blanche(i2);
+} else if(i2 == NULL){
+  return est_blanche(i1);
 } else if (i1->toutnoir){
-    //printf("Image toute noire, on teste juste i2\n" );
-    affiche_simple(i2);
     return est_noire(i2);
+  } else if(i2->toutnoir){
+    return est_noire(i1);
   }
   else {
     return (meme_dessin(i1->fils[0],i2->fils[0]) &&
@@ -429,6 +430,7 @@ int main(int argc, char const *argv[]) {
   image pif_noire;
   nv_pif_noire(&pif_noire);
   image simple_noire = construit_noir();
+  image simple_blanche = construit_blanc();
 
 
   printf("Damier : ");
@@ -479,6 +481,9 @@ int main(int argc, char const *argv[]) {
   else printf("Faux\n");
   printf("pif noire et simple noire : ");
   if (meme_dessin(pif_noire, simple_noire)) printf("Vrai\n");
+  else printf("Faux\n");
+  printf("pif blanche et simple blanche : ");
+  if (meme_dessin(pif_blanche, simple_blanche)) printf("Vrai\n");
   else printf("Faux\n");
 
   /* Résultats pas toujours convaincants*/
