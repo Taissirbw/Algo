@@ -181,7 +181,7 @@ bool meme_dessin(image i1, image i2){
 /*       Difference      */
 /*************************/
 /* Pas encore définitive */
-image Difference(image i1, image i2){
+/**image Difference(image i1, image i2){
 	image res;
 	if(est_noire(i1) && est_noire(i2))
 		res = construit_blanc();
@@ -193,6 +193,34 @@ image Difference(image i1, image i2){
 		res = construit_noir();
   else if(i1==NULL && !(i2==NULL)) res = construit_noir();
   else if (!(i1==NULL) && i2==NULL) res = construit_noir();
+	else{
+		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
+		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
+	}
+	return res;
+}**/
+
+/* Je prédéclare Negatif pour que lorsque l'on voit qu'une image i1 est simple,
+en l'occurence noire, comme on va construire une image noire à chaque
+fois qu'il y aura une diff avec i2, la differencede(i1, i2) revient donc à
+renvoyer le negatif de i2.
+Pour le cas où i1 est toute blanche, difference(i1, i2) c'est équivalent à
+renvoyer i2.*/
+void Negatif(image *img);
+
+image Difference(image i1, image i2){
+	image res;
+  if(i1==NULL){
+    if (i2==NULL) construit_blanc();
+    else return i2;
+  } else if(i1->toutnoir){
+    if (i2->toutnoir) construit_blanc();
+	  else return Negatif( &(Copie(i2)));
+	} else if (i2==NULL){
+    return i1;
+  } else if (i2->toutnoir){
+    return Negatif( &(Copie(i1)) );
+  }
 	else{
 		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
 		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
