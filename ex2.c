@@ -676,8 +676,8 @@ void Test_SommeAvantApres(Liste l){
 /* Fonction de test trop longue, elle sera divisée en plusieur partie plus tard.
 Pour l'instant, pour plus de visibilité il vaut mieux commenter les autre test
 lorsqu'on fait appel à cette fonction.*/
-void Test_ListeDeListes(){
 
+void Test_Implementation(){
   printf("\nTests de la structure ListeDeListe \n" );
   ListeDeListe ll;
   initVideDe(&ll);
@@ -711,6 +711,25 @@ void Test_ListeDeListes(){
 
   printf("PremierDe : Premier de ll : \n");
   affiche_rec(premierDe(ll));
+}
+
+void Test_Permutation(){
+
+  printf("\nTests de la fonction Permutation \n" );
+  Liste l ;
+  initVide(&l);	
+  ListeDeListe ll;
+  initVideDe(&ll);
+  empile(-2, &l) ;
+  empile(4, &l) ;
+  empile(1, &l) ;
+  empile(3, &l) ;
+  empile(2, &l) ;
+  ll = ajouteDe(l, ll);
+  empile(-8, &l) ;
+  empile(3, &l) ;
+  empile(2, &l) ;
+  ll = ajouteDe(l, ll);
 
   printf("AETTL : ajoute 45 en tête de chaque liste de ll : \n");
   afficheDe(AETTL(45, ll));
@@ -777,8 +796,9 @@ int main(int argc, char** argv){
     Test_SousEnsemble(l,m);
 
     /*Pour l'instant, pour plus de visibilité il vaut mieux commenter
-    les autre test lorsqu'on fait appel à Test_ListeDeListes.*/
-    //Test_ListeDeListes();
+    les autre test lorsqu'on fait appel à Test_Permutation et Test_Implementation.*/
+    //Test_Permutation();
+    //Test_Implementation();
 
     Test_EliminePositionsPaires(l);
 
