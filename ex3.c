@@ -208,6 +208,7 @@ Pour le cas où i1 est toute blanche, difference(i1, i2) c'est équivalent à
 renvoyer i2.*/
 void Negatif(image *img);
 
+/*
 image Difference(image i1, image i2){
 	image res;
   if(i1==NULL){
@@ -227,25 +228,33 @@ image Difference(image i1, image i2){
 	}
 	return res;
 }
+*/
 
 /*************************/
 /*      rendmemoire      */
 /*************************/
 /* Pas encore définitive (ne fonctionne pas) */
 void rendmemoire(image *img){
-  if (! ((*img) == NULL) ){
-    printf("Image non nulle\n");
-    if (! (*img)->toutnoir){
-      printf("Image non toute noire\n");
+  if (! (img == NULL) ){
+    if ((*img)->toutnoir){
       for (int i = 0; i < 4; ++i){
-        printf("rendmemoire fils %d\n", i);
+        free(&((*img)->fils[i]));
+      }
+      //if(*img == NULL) printf("Image noire OK\n" );
+      free(*img);
+      //if(*img == NULL) printf("Image noire OK\n" );
+    } else{
+      for (int i = 0; i < 4; ++i){
         rendmemoire(&((*img)->fils[i]));
       }
+      free(*img);
+      //if(*img == NULL) printf("Image autre OK\n" );
     }
-    printf("fin de l'itération\n");
-    free(img);
   }
+  //if(*img == NULL) printf("Image générale OK\n" );
 }
+
+//void rendmemoire
 
 /*************************/
 /*        lecture        */
@@ -483,8 +492,7 @@ int main(int argc, char const *argv[]) {
   if (est_noire(pif_noire)) printf("Vrai\n");
   else printf("Faux\n");
 
-  /* ne fonctionne pas. */
-  //rendmemoire(&pif);
+
 
   printf("\nTest Copie : \n");
   //affiche_simple(pif);
@@ -515,6 +523,7 @@ int main(int argc, char const *argv[]) {
   else printf("Faux\n");
 
   /* Résultats pas toujours convaincants*/
+  /*
   printf("\nDifference : ");
   affiche_simple(Difference(carre,damier));
   affiche_simple(Difference(carre,carre2));
@@ -522,6 +531,7 @@ int main(int argc, char const *argv[]) {
   affiche_simple(Difference(pif, construit_noir()));
   affiche_simple(Difference(pif_noire, construit_noir()));
   affiche_simple(Difference(pif_noire, pif_blanche));
+  */
 
   /*printf("Test Lecture Clavier : \n");
   image lue = lecture();
@@ -534,5 +544,25 @@ int main(int argc, char const *argv[]) {
   printf("Negatif apres : ");
   Negatif(&carre);
   affiche_simple(carre);
+
+  /* ne fonctionne pas. */
+  printf("Rend mémoire : \n" );
+  rendmemoire(&pif);
+    printf("Damier : \n" );
+  rendmemoire(&damier);
+    printf("Carré : \n" );
+  rendmemoire(&carre);
+    printf("Carré 2 : \n" );
+  rendmemoire(&carre2);
+    printf("PifBlanche : \n" );
+  rendmemoire(&pif_blanche);
+    printf("Pif Noire : \n" );
+  rendmemoire(&pif_noire);
+    printf("Simple Noire : \n" );
+  rendmemoire(&simple_noire);
+    printf("Simple blanche : \n" );
+  rendmemoire(&simple_blanche);
+  //printf("Affichage rend mémoire : \n" );
+  //affiche_simple(pif);
 
 }

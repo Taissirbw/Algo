@@ -143,7 +143,7 @@ void depile(Liste *L)
 
 /*************************************************/
 /*                                               */
-/*          briques de base ListeDe              */
+/*          briques de base ListeDeListe         */
 /*                                               */
 /*************************************************/
 
@@ -717,7 +717,7 @@ void Test_Permutation(){
 
   printf("\nTests de la fonction Permutation \n" );
   Liste l ;
-  initVide(&l);	
+  initVide(&l);
   ListeDeListe ll;
   initVideDe(&ll);
   empile(-2, &l) ;
