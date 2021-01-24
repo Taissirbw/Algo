@@ -489,6 +489,7 @@ int main(int argc, char const *argv[]) {
 
 
   printf("\nTest Meme dessin : \n");
+  /*
   if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
   else printf("Faux\n");
   if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
@@ -496,7 +497,7 @@ int main(int argc, char const *argv[]) {
   if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
   else printf("Faux\n");
   if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
-  else printf("Faux\n");
+  else printf("Faux\n");*/
   printf("Carre et carre : ");
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
