@@ -27,7 +27,7 @@ Commande pour compiler : gcc -Wall -Werror -pedantic -g -o ex[n] ex[n].c
 	mode profondeur : OK
   - est-noire et est-blanche : OK
   - copie : OK
-  - aire :
+  - aire : OK
   - meme_dessin : OK
   - difference : OK
   - rendmemoire : OK
