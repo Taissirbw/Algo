@@ -47,9 +47,9 @@ image construit_blanc(){
 image construit_noir(){
   image img = (image) malloc(sizeof(bloc_image));
   img->toutnoir = true;
-  /*for(int i=0; i<4; i++){
+  for(int i=0; i<4; i++){
     img->fils[i] = NULL;
-  }*/
+  }
   return img;
 }
 
@@ -214,11 +214,12 @@ image Difference(image i1, image i2){
     res = CopieNeg(i2);
   } else if (i2->toutnoir){
     res = CopieNeg(i1);
-  } else
-  res = construit_composee( Difference(i1->fils[0],i2->fils[0]),
-                            Difference(i1->fils[1],i2->fils[1]),
-                            Difference(i1->fils[2],i2->fils[2]),
-                            Difference(i1->fils[3],i2->fils[3]));
+  } else{
+    res = construit_composee( Difference(i1->fils[0],i2->fils[0]),
+                              Difference(i1->fils[1],i2->fils[1]),
+                              Difference(i1->fils[2],i2->fils[2]),
+                              Difference(i1->fils[3],i2->fils[3]));
+  }
 	return res;
 }
 
@@ -226,13 +227,13 @@ image Difference(image i1, image i2){
 /*************************/
 /*      rendmemoire      */
 /*************************/
-void rendmemoire(image *img){
-  if (! (*img == NULL) ){
+void rendmemoire(image img){
+  if (img != NULL){
       for (int i = 0; i < 4; ++i){
-        rendmemoire(  &((*img)->fils)[i] );
+        if (img->fils[i] != NULL) rendmemoire(  img->fils[i] );
       }
-    free(*img);
-    *img = NULL;
+    free(img);
+    img = NULL;
   }
 }
 
@@ -255,6 +256,7 @@ image lecture_aux(){
   else printf("Entrée invalide, fin de la lecture clavier\n");
   exit(1);
 }
+
 image lecture(){
   printf("Lecture Clavier : entrez une image valide à l'aide des caractères '.', 'N' ou 'B' \n");
   return lecture_aux();
@@ -312,8 +314,8 @@ image nv_carre(){
 }
 
 image nv_carre2(){
-  image *img;
-  *img = construit_composee(
+  image img;
+  img = construit_composee(
     construit_composee(
       construit_blanc(),
       construit_blanc(),
@@ -339,8 +341,8 @@ image nv_carre2(){
       construit_blanc()
     )
   );
-  Negatif(img);
-  return *img;
+  Negatif(&img);
+  return img;
 }
 
 image nv_damier(){
@@ -450,6 +452,7 @@ int main(int argc, char const *argv[]) {
   image pif_noire = nv_pif_noire();
   image simple_noire = construit_noir();
   image simple_blanche = construit_blanc();
+  image lue;
 
   printf("Damier : ");
   affiche_simple(damier);
@@ -484,19 +487,12 @@ int main(int argc, char const *argv[]) {
   affiche_simple(simple_noire);
   printf("En voici sa copie : \n");
   affiche_simple(Copie(simple_noire));
-
-  printf("\n\nTest aire : %f\n", aire(lecture(), 1));
+  lue = lecture();
+  printf("\n\nTest aire : %f\n", aire(lue, 1));
+  rendmemoire(lue);
 
 
   printf("\nTest Meme dessin : \n");
-  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
-  else printf("Faux\n");
-  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
-  else printf("Faux\n");
-  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
-  else printf("Faux\n");
-  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
-  else printf("Faux\n");
   printf("Carre et carre : ");
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
@@ -516,36 +512,35 @@ int main(int argc, char const *argv[]) {
   if (meme_dessin(pif_blanche, simple_blanche)) printf("Vrai\n");
   else printf("Faux\n");
 
-  /* Résultats pas toujours convaincants*/
 
   printf("\nDifference : ");
-  printf("Noire et damnier : ");
-  affiche_simple(Difference(simple_noire,damier));
-  printf("Damier et Noire : ");
-  affiche_simple(Difference(damier, simple_noire));
-  printf("Blanche et damnier : ");
-  affiche_simple(Difference(simple_blanche,damier));
-  printf("Damier et Blanche : ");
-  affiche_simple(Difference(damier, simple_blanche));
-  printf("Carre et damnier : ");
-  affiche_simple(Difference(carre,damier));
-  printf("Carre et carre2 : ");
-  affiche_simple(Difference(carre,carre2));
-  printf("Carre et carre : ");
-  affiche_simple(Difference(carre, carre));
-  printf("pif et simple noire : ");
-  affiche_simple(Difference(pif, simple_noire));
-  printf("pif noire et simple noire : ");
-  affiche_simple(Difference(pif_noire, simple_noire));
-  printf("pif noire et pif blanche : ");
-  affiche_simple(Difference(pif_noire, pif_blanche));
+   printf("Noire et damnier : ");
+   affiche_simple(Difference(simple_noire,damier));
+   printf("Damier et Noire : ");
+   affiche_simple(Difference(damier, simple_noire));
+   printf("Blanche et damnier : ");
+   affiche_simple(Difference(simple_blanche,damier));
+   printf("Damier et Blanche : ");
+   affiche_simple(Difference(damier, simple_blanche));
+   printf("Carre et damnier : ");
+   affiche_simple(Difference(carre,damier));
+   printf("Carre et carre2 : ");
+   affiche_simple(Difference(carre,carre2));
+   printf("Carre et carre : ");
+   affiche_simple(Difference(carre, carre));
+   printf("pif et simple noire : ");
+   affiche_simple(Difference(pif, simple_noire));
+   printf("pif noire et simple noire : ");
+   affiche_simple(Difference(pif_noire, simple_noire));
+   printf("pif noire et pif blanche : ");
+   affiche_simple(Difference(pif_noire, pif_blanche));
 
 
   /*printf("Test Lecture Clavier : \n");
-  image lue = lecture();
+  lue = lecture();
   printf("Voici l'image lue : \n");
   affiche_simple(lue);
-  affiche_profondeur(lue);*/
+  rendmemoire(lue)*/
 
   printf("Negatif avant : ");
   affiche_simple(carre);
@@ -553,28 +548,29 @@ int main(int argc, char const *argv[]) {
   Negatif(&carre);
   affiche_simple(carre);
 
-  /* ne fonctionne pas. */
-  printf("Rend mémoire : \n" );
+  //printf("Rend mémoire : \n" );
+
   //printf("Simple Noire : \n" );
-rendmemoire(&simple_noire);
+rendmemoire(simple_noire);
   //printf("Simple blanche : \n" );
-rendmemoire(&simple_blanche);
+rendmemoire(simple_blanche);
   //printf("Pif : \n" );
-  rendmemoire(&pif);
+  rendmemoire(pif);
     //printf("Damier : \n" );
     //affiche_simple(damier);
-  rendmemoire(&damier);
+
+  rendmemoire(damier);
   //affiche_simple(damier);
     //printf("Carré : \n" );
     //affiche_simple(carre);
-  rendmemoire(&carre);
+  rendmemoire(carre);
   //affiche_simple(carre);
     //printf("Carré 2 : \n" );
-  rendmemoire(&carre2);
+  rendmemoire(carre2);
     //printf("PifBlanche : \n" );
-  rendmemoire(&pif_blanche);
+  rendmemoire(pif_blanche);
     //printf("Pif Noire : \n" );
-  rendmemoire(&pif_noire);
+  rendmemoire(pif_noire);
 
   //printf("Affichage rend mémoire : \n" );
   //affiche_simple(pif);
