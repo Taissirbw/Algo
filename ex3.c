@@ -137,7 +137,6 @@ bool est_noire(image img){
   else{
     if (img->toutnoir) return true;
     else{
-      //printf("Est noir recursion\n" );
       return (est_noire(img->fils[0])
               && est_noire(img->fils[1])
               && est_noire(img->fils[2])
@@ -152,8 +151,23 @@ bool est_noire(image img){
 image Copie(image img){
 	if (img == NULL) return construit_blanc();
 	else if (img->toutnoir) return construit_noir();
-	else return construit_composee(img->fils[0],img->fils[1],
-                                img->fils[2],img->fils[3]);
+	else return construit_composee( img->fils[0],
+                                  img->fils[1],
+                                  img->fils[2],
+                                  img->fils[3]);
+}
+
+/*************************/
+/*         aire          */
+/*************************/
+float aire(image img, float i){
+  if (img == NULL) return 0;
+  else if (img->toutnoir){
+    return ((1/i) * (1/i));
+  } else return aire(img->fils[0], i*2) +
+                aire(img->fils[1], i*2) +
+                aire(img->fils[2], i*2) +
+                aire(img->fils[3], i*2);
 }
 
 /*************************/
@@ -180,81 +194,48 @@ bool meme_dessin(image i1, image i2){
 /*************************/
 /*       Difference      */
 /*************************/
-/* Pas encore définitive */
-/**image Difference(image i1, image i2){
-	image res;
-	if(est_noire(i1) && est_noire(i2))
-		res = construit_blanc();
-	else if (est_blanche(i1) && est_blanche(i2))
-		res = construit_blanc();
-	else if(est_blanche(i1) && est_noire(i2))
-		res = construit_noir();
-	else if (est_noire(i1) && est_blanche(i2))
-		res = construit_noir();
-  else if(i1==NULL && !(i2==NULL)) res = construit_noir();
-  else if (!(i1==NULL) && i2==NULL) res = construit_noir();
-	else{
-		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
-		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
-	}
-	return res;
-}**/
+image CopieNeg(image img){
+	if (img == NULL) return construit_noir();
+	else if (img->toutnoir) return construit_blanc();
+	else return construit_composee(
+    CopieNeg(img->fils[0]),
+    CopieNeg(img->fils[1]),
+    CopieNeg(img->fils[2]),
+    CopieNeg(img->fils[3]));
+}
 
-/* Je prédéclare Negatif pour que lorsque l'on voit qu'une image i1 est simple,
-en l'occurence noire, comme on va construire une image noire à chaque
-fois qu'il y aura une diff avec i2, la differencede(i1, i2) revient donc à
-renvoyer le negatif de i2.
-Pour le cas où i1 est toute blanche, difference(i1, i2) c'est équivalent à
-renvoyer i2.*/
-void Negatif(image *img);
-
-/*
 image Difference(image i1, image i2){
 	image res;
-  if(i1==NULL){
-    if (i2==NULL) construit_blanc();
-    else return i2;
-  } else if(i1->toutnoir){
-    if (i2->toutnoir) construit_blanc();
-	  else return Negatif( &(Copie(i2)));
-	} else if (i2==NULL){
-    return i1;
+  if(i1 == NULL){
+    res = Copie(i2);
+  } else if (i2 == NULL) {
+    res = Copie(i1);
+  } else if (i1->toutnoir){
+    res = CopieNeg(i2);
   } else if (i2->toutnoir){
-    return Negatif( &(Copie(i1)) );
-  }
-	else{
-		res = construit_composee(Difference(i1->fils[0],i2->fils[0]),Difference(i1->fils[1],i2->fils[1]),
-		 			Difference(i1->fils[2],i2->fils[2]),Difference(i1->fils[3],i2->fils[3]));
-	}
+    res = CopieNeg(i1);
+  } else
+  res = construit_composee( Difference(i1->fils[0],i2->fils[0]),
+                            Difference(i1->fils[1],i2->fils[1]),
+                            Difference(i1->fils[2],i2->fils[2]),
+                            Difference(i1->fils[3],i2->fils[3]));
 	return res;
 }
-*/
+
 
 /*************************/
 /*      rendmemoire      */
 /*************************/
-/* Pas encore définitive (ne fonctionne pas) */
 void rendmemoire(image *img){
-  if (! (img == NULL) ){
-    if ((*img)->toutnoir){
+  if (! (*img == NULL) ){
       for (int i = 0; i < 4; ++i){
-        free(&((*img)->fils[i]));
+        rendmemoire(  &((*img)->fils)[i] );
       }
-      //if(*img == NULL) printf("Image noire OK\n" );
-      free(*img);
-      //if(*img == NULL) printf("Image noire OK\n" );
-    } else{
-      for (int i = 0; i < 4; ++i){
-        rendmemoire(&((*img)->fils[i]));
-      }
-      free(*img);
-      //if(*img == NULL) printf("Image autre OK\n" );
-    }
+    free(*img);
+    *img = NULL;
   }
-  //if(*img == NULL) printf("Image générale OK\n" );
 }
 
-//void rendmemoire
 
 /*************************/
 /*        lecture        */
@@ -283,8 +264,13 @@ image lecture(){
 /*        négatif        */
 /*************************/
 void Negatif(image *img){
-	if(est_noire(*img)) *img = construit_blanc();
-	else if(est_blanche(*img)) *img = construit_noir();
+	if(*img == NULL){
+    free(*img);
+    *img = construit_noir();
+  } else if( (*img)->toutnoir ) {
+    free(*img);
+    *img = construit_blanc();
+  }
 	else{
 		for (int i = 0; i < 4; ++i)
 			Negatif(&((*img)->fils[i]));
@@ -495,14 +481,27 @@ int main(int argc, char const *argv[]) {
 
 
   printf("\nTest Copie : \n");
-  //affiche_simple(pif);
-  /*image lue = lecture();
-  printf("Voici l'image lue : \n");
-  affiche_simple(lue);
+  printf("Pif\n");
+  affiche_simple(pif);
   printf("En voici sa copie : \n");
-  affiche_simple(Copie(lue));*/
+  affiche_simple(Copie(pif));
+  printf("Simple Noire\n");
+  affiche_simple(simple_noire);
+  printf("En voici sa copie : \n");
+  affiche_simple(Copie(simple_noire));
+
+  printf("\n\nTest aire : %f\n", aire(lecture(), 1));
+
 
   printf("\nTest Meme dessin : \n");
+  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
+  else printf("Faux\n");
+  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
+  else printf("Faux\n");
+  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
+  else printf("Faux\n");
+  if (meme_dessin(lecture(),lecture())) printf("Vrai\n");
+  else printf("Faux\n");
   printf("Carre et carre : ");
   if (meme_dessin(carre,carre)) printf("Vrai\n");
   else printf("Faux\n");
@@ -523,15 +522,29 @@ int main(int argc, char const *argv[]) {
   else printf("Faux\n");
 
   /* Résultats pas toujours convaincants*/
-  /*
+
   printf("\nDifference : ");
+  printf("Noire et damnier : ");
+  affiche_simple(Difference(simple_noire,damier));
+  printf("Damier et Noire : ");
+  affiche_simple(Difference(damier, simple_noire));
+  printf("Blanche et damnier : ");
+  affiche_simple(Difference(simple_blanche,damier));
+  printf("Damier et Blanche : ");
+  affiche_simple(Difference(damier, simple_blanche));
+  printf("Carre et damnier : ");
   affiche_simple(Difference(carre,damier));
+  printf("Carre et carre2 : ");
   affiche_simple(Difference(carre,carre2));
+  printf("Carre et carre : ");
   affiche_simple(Difference(carre, carre));
-  affiche_simple(Difference(pif, construit_noir()));
-  affiche_simple(Difference(pif_noire, construit_noir()));
+  printf("pif et simple noire : ");
+  affiche_simple(Difference(pif, simple_noire));
+  printf("pif noire et simple noire : ");
+  affiche_simple(Difference(pif_noire, simple_noire));
+  printf("pif noire et pif blanche : ");
   affiche_simple(Difference(pif_noire, pif_blanche));
-  */
+
 
   /*printf("Test Lecture Clavier : \n");
   image lue = lecture();
@@ -547,21 +560,27 @@ int main(int argc, char const *argv[]) {
 
   /* ne fonctionne pas. */
   printf("Rend mémoire : \n" );
+  //printf("Simple Noire : \n" );
+rendmemoire(&simple_noire);
+  //printf("Simple blanche : \n" );
+rendmemoire(&simple_blanche);
+  //printf("Pif : \n" );
   rendmemoire(&pif);
-    printf("Damier : \n" );
+    //printf("Damier : \n" );
+    //affiche_simple(damier);
   rendmemoire(&damier);
-    printf("Carré : \n" );
+  //affiche_simple(damier);
+    //printf("Carré : \n" );
+    //affiche_simple(carre);
   rendmemoire(&carre);
-    printf("Carré 2 : \n" );
+  //affiche_simple(carre);
+    //printf("Carré 2 : \n" );
   rendmemoire(&carre2);
-    printf("PifBlanche : \n" );
+    //printf("PifBlanche : \n" );
   rendmemoire(&pif_blanche);
-    printf("Pif Noire : \n" );
+    //printf("Pif Noire : \n" );
   rendmemoire(&pif_noire);
-    printf("Simple Noire : \n" );
-  rendmemoire(&simple_noire);
-    printf("Simple blanche : \n" );
-  rendmemoire(&simple_blanche);
+
   //printf("Affichage rend mémoire : \n" );
   //affiche_simple(pif);
 
