@@ -283,8 +283,8 @@ void Negatif(image *img){
 /*             procédures (~ 150 lignes)         */
 /*************************************************/
 
-void nv_carre(image *img){
-  *img = construit_composee(
+image nv_carre(){
+   return construit_composee(
     construit_composee(
       construit_blanc(),
       construit_blanc(),
@@ -311,7 +311,8 @@ void nv_carre(image *img){
     );
 }
 
-void nv_carre2(image *img){
+image nv_carre2(){
+  image *img;
   *img = construit_composee(
     construit_composee(
       construit_blanc(),
@@ -339,10 +340,11 @@ void nv_carre2(image *img){
     )
   );
   Negatif(img);
+  return *img;
 }
 
-void nv_damier(image *img){
-  *img = construit_composee(
+image nv_damier(){
+  return construit_composee(
     construit_noir(),
     construit_blanc(),
     construit_noir(),
@@ -350,8 +352,8 @@ void nv_damier(image *img){
   );
 }
 
-void nv_pif(image *img){
-  *img = construit_composee(
+image nv_pif(){
+  return construit_composee(
       construit_noir(),
       construit_composee(
             construit_blanc(),
@@ -378,8 +380,8 @@ void nv_pif(image *img){
   );
 }
 
-void nv_pif_blanche(image *img){
-  *img = construit_composee(
+image nv_pif_blanche(){
+  return construit_composee(
       construit_blanc(),
       construit_composee(
             construit_blanc(),
@@ -406,8 +408,8 @@ void nv_pif_blanche(image *img){
   );
 }
 
-void nv_pif_noire(image *img){
-  *img = construit_composee(
+image nv_pif_noire(){
+  return construit_composee(
       construit_noir(),
       construit_composee(
             construit_noir(),
@@ -440,21 +442,14 @@ void nv_pif_noire(image *img){
 /*                                               */
 /*************************************************/
 int main(int argc, char const *argv[]) {
-  image damier;
-  nv_damier(&damier);
-  image carre;
-  nv_carre(&carre);
-  image carre2;
-  nv_carre2(&carre2);
-  image pif;
-  nv_pif(&pif);
-  image pif_blanche;
-  nv_pif_blanche(&pif_blanche);
-  image pif_noire;
-  nv_pif_noire(&pif_noire);
+  image damier = nv_damier();
+  image carre = nv_carre();
+  image carre2 = nv_carre2();
+  image pif = nv_pif();
+  image pif_blanche = nv_pif_blanche();
+  image pif_noire = nv_pif_noire();
   image simple_noire = construit_noir();
   image simple_blanche = construit_blanc();
-
 
   printf("Damier : ");
   affiche_simple(damier);
