@@ -14,17 +14,17 @@ PARTIE III
 
 aire :
 
-MemeDessin :
-evitez de faire "if non truc then long else court"  ---> if test then
-court else long
-      surtout sur un truc comme MD...
-plante si i1 composée et i2  B ou N
+[OK]MemeDessin :
+[OK]evitez de faire "if non truc then long else court"  ---> if test then
+[OK]court else long
+[OK]      surtout sur un truc comme MD...
+[OK]plante si i1 composée et i2  B ou N
 
-Difference : quadratique
-    plante si une imae coposee et l'autre simple
+[OK]Difference : quadratique
+[OK]   plante si une imae coposee et l'autre simple
 
-Rendmemoire : vous vous plantez d'un niveau de pointeur, free(img); ->
-free(*img);
+[OK]Rendmemoire : vous vous plantez d'un niveau de pointeur, free(img); ->
+[OK]free(*img);
 
 Lecture :          les char autres que .BN sont autorisés, et ils sont
 ignorés
@@ -33,8 +33,8 @@ CSIP : na
 
 Arrondit : na
 
-Negatif : quadratique
-       faire des free
+[OK]Negatif : quadratique
+[OK]       faire des free
 
 Simplifie : na
 
