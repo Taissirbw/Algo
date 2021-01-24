@@ -26,8 +26,8 @@ aire :
 [OK]Rendmemoire : vous vous plantez d'un niveau de pointeur, free(img); ->
 [OK]free(*img);
 
-Lecture :          les char autres que .BN sont autorisés, et ils sont
-ignorés
+**Lecture :          les char autres que .BN sont autorisés, et ils sont
+ignorés**
 
 CSIP : na
 
