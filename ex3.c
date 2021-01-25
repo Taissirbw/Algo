@@ -261,6 +261,36 @@ image lecture(){
 }
 
 /*************************/
+/*  Compte Sous Images   */
+/*        Pleines        */
+/*************************/
+
+/*...BBNB.NNBN.BBBN.NNNBN.NBN.BBNB.BNB..BBNB.NBBN.BNBN.NBNB*/
+/*..BBB.BBBN.BBB.BBBN.BBB.BBBN.BBB.BBBN*/
+
+bool testImagePleine(image i, int h){
+  if ((i == NULL) || (i->toutnoir)) return (h==0);
+  else return ((h < 0) || (testImagePleine(i->fils[0], h - 1) &&
+                          testImagePleine(i->fils[1], h - 1) &&
+                          testImagePleine(i->fils[2], h - 1) &&
+                          testImagePleine(i->fils[3], h - 1)));
+}
+
+int CSIP(image i, int h){
+  int res = 0;
+  if ((i == NULL)||(i->toutnoir)){}
+  else {
+    res = CSIP(i->fils[0], h) +
+          CSIP(i->fils[1], h) +
+          CSIP(i->fils[2], h) +
+          CSIP(i->fils[3], h);
+  }
+  if (testImagePleine(i, h)) res += 1;
+  return res;
+}
+
+
+/*************************/
 /*        négatif        */
 /*************************/
 void Negatif(image *img){
@@ -485,7 +515,7 @@ int main(int argc, char const *argv[]) {
   printf("En voici sa copie : \n");
   affiche_simple(Copie(simple_noire));
 
-  printf("\n\nTest aire : %f\n", aire(lecture(), 1));
+  printf("\n\nTest aire : %f\n", aire(pif_noire, 1));
 
 
   printf("\nTest Meme dessin : \n");
@@ -547,6 +577,11 @@ int main(int argc, char const *argv[]) {
   printf("Voici l'image lue : \n");
   affiche_simple(lue);
   affiche_profondeur(lue);*/
+
+  printf("Test Compte Sous Image Pleines\n");
+  image lue = lecture();
+  printf("%d\n",CSIP(lue, 1));
+  rendmemoire(&lue);
 
   printf("Negatif avant : ");
   affiche_simple(carre);
