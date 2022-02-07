@@ -2,13 +2,15 @@
 
 *note : Ce dépôt git avait pour fonction principale de nous permettre de collaborer en binôme lorsque nous travaillions sur le projet.*
 Projet d'Algorithmique en L3 Informatique à l'UFR des Sciences d'Orsay. Enseignant : Laurent Rosaz.
+Objectifs : Réfléchir à l'implémentation des algorithmes vus en cours, ainsi que quelques variantes. Pour chaque fonction, le coût en temps et en espace étaient pris en compte ; le but étant évidemment de produire du code optimisé
 
 
 > "rise and shine sailers, it be LE TP D'ALGO"
-Commande pour compiler avec affichage des les warnings : gcc -Wall -Werror -pedantic -g -o ex[n] ex[n].c
-Commande pour regarder les fuites de mémoires : valgrind
-Installation de valgrind avec : sudo apt valgrind
-Après avoir compilé ex3.c on fait valgrind ./ex3
+
+Commande pour compiler avec affichage des les warnings : `gcc -Wall -Werror -pedantic -g -o ex[n] ex[n].c`
+Commande pour regarder les fuites de mémoires : `valgrind`
+Installation de valgrind avec : `sudo apt valgrind`
+Après avoir compilé ex3.c on fait `valgrind ./ex3`
 Après ya une commande super longue pour avoir le détail des fuites (mais valgrind la donne). 
 
 ### On en est où ?
